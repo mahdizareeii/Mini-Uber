@@ -1,4 +1,4 @@
-package com.android.miniuber.util
+package com.android.miniuber.core
 
 sealed class AppRoute(
     val route: String,

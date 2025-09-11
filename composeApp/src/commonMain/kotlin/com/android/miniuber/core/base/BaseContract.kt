@@ -1,7 +1,6 @@
-package com.android.miniuber.domain.viper.contract
+package com.android.miniuber.core.base
 
 import androidx.lifecycle.ViewModel
-import com.android.miniuber.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

@@ -1,4 +1,4 @@
-package com.android.miniuber.util
+package com.android.miniuber.core.base
 
 sealed class UiState<out T> {
     object Init : UiState<Nothing>()

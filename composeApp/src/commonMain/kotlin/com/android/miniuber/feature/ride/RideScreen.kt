@@ -1,4 +1,4 @@
-package com.android.miniuber.sharedscreen
+package com.android.miniuber.feature.ride
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

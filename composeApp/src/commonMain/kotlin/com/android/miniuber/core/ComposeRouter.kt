@@ -1,8 +1,7 @@
-// commonMain
-package com.android.miniuber.domain.viper.router
+package com.android.miniuber.core
 
 import androidx.navigation.NavController
-import com.android.miniuber.domain.viper.contract.BaseContract
+import com.android.miniuber.core.base.BaseContract
 
 class ComposeRouter(private val navController: NavController) : BaseContract.Router {
 

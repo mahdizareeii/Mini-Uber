@@ -1,13 +1,11 @@
-package com.android.miniuber.domain.viper.presenter
+package com.android.miniuber.feature.home
 
 import androidx.lifecycle.viewModelScope
 import com.android.miniuber.domain.model.LocationRequest
 import com.android.miniuber.domain.model.RideRequest
-import com.android.miniuber.domain.viper.contract.BaseContract
-import com.android.miniuber.domain.viper.contract.home.HomeContract
-import com.android.miniuber.domain.viper.contract.home.HomeEvent
-import com.android.miniuber.util.AppRoute
-import com.android.miniuber.util.UiState
+import com.android.miniuber.core.base.BaseContract
+import com.android.miniuber.core.AppRoute
+import com.android.miniuber.core.base.UiState
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 

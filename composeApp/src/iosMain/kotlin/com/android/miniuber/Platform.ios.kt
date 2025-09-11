@@ -1,4 +1,4 @@
-package com.android.miniuber.util
+package com.android.miniuber
 
 import platform.Foundation.NSUUID
 import platform.UIKit.UIDevice

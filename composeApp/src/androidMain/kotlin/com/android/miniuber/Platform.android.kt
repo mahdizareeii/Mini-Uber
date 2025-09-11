@@ -1,4 +1,4 @@
-package com.android.miniuber.util
+package com.android.miniuber
 
 import android.os.Build
 import java.util.UUID

@@ -1,4 +1,4 @@
-package com.android.miniuber.repository
+package com.android.miniuber.data.repository
 
 import com.android.miniuber.domain.model.DriverResponse
 import com.android.miniuber.domain.model.LocationRequest
@@ -6,10 +6,10 @@ import com.android.miniuber.domain.model.LocationResponse
 import com.android.miniuber.domain.model.RideRequest
 import com.android.miniuber.domain.model.RideResponse
 import com.android.miniuber.domain.repository.DriverRepository
-import com.android.miniuber.util.getPlatform
+import com.android.miniuber.getPlatform
 import kotlinx.coroutines.delay
 
-class FakeDriverRepository : DriverRepository {
+class FakeDriverRepositoryImpl : DriverRepository {
 
     override suspend fun fetchNearbyDrivers(location: LocationRequest): Result<List<DriverResponse>> {
         delay(1000)

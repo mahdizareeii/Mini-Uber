@@ -1,5 +1,5 @@
 // commonMain
-package com.android.miniuber.sharedscreen
+package com.android.miniuber.feature.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,10 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.android.miniuber.domain.model.RideRequest
-import com.android.miniuber.domain.viper.contract.home.HomeContract
-import com.android.miniuber.domain.viper.contract.home.HomeEvent
-import com.android.miniuber.domain.viper.contract.home.HomeState
-import com.android.miniuber.util.UiState
+import com.android.miniuber.core.base.UiState
 
 @Composable
 fun HomeScreen(presenter: HomeContract.Presenter) {

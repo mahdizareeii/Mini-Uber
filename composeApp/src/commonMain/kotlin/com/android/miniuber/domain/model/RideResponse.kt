@@ -1,6 +1,6 @@
 package com.android.miniuber.domain.model
 
-import com.android.miniuber.util.getPlatform
+import com.android.miniuber.getPlatform
 
 data class RideResponse(
     val id: String,

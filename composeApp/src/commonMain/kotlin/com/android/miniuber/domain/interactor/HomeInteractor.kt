@@ -5,8 +5,9 @@ import com.android.miniuber.domain.model.LocationRequest
 import com.android.miniuber.domain.model.RideRequest
 import com.android.miniuber.domain.model.RideResponse
 import com.android.miniuber.domain.repository.DriverRepository
-import com.android.miniuber.domain.viper.contract.home.HomeContract
+import com.android.miniuber.feature.home.HomeContract
 
+//Handle business login here like (use cases)
 class HomeInteractor(private val repository: DriverRepository) : HomeContract.Interactor() {
     override suspend fun getNearbyDrivers(location: LocationRequest): Result<List<DriverResponse>> {
         return repository.fetchNearbyDrivers(location)

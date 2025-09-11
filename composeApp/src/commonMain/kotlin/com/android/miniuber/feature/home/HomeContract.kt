@@ -1,25 +1,15 @@
 // commonMain
-package com.android.miniuber.domain.viper.contract.home
+package com.android.miniuber.feature.home
 
 import com.android.miniuber.domain.model.DriverResponse
 import com.android.miniuber.domain.model.LocationRequest
 import com.android.miniuber.domain.model.RideRequest
 import com.android.miniuber.domain.model.RideResponse
-import com.android.miniuber.domain.viper.contract.BaseContract
-import com.android.miniuber.util.UiState
+import com.android.miniuber.core.base.BaseContract
+import com.android.miniuber.core.base.UiState
 import kotlinx.coroutines.flow.update
 
-sealed interface HomeEvent {
-    data object NavigateBack : HomeEvent
-    data object LoadDrivers : HomeEvent
-    data class RequestRide(val request: RideRequest) : HomeEvent
-}
-
-data class HomeState(
-    val drivers: List<DriverResponse> = listOf()
-)
-
-interface HomeContract: BaseContract {
+interface HomeContract : BaseContract {
     abstract class Presenter : BaseContract.Presenter<HomeEvent, HomeState>() {
         protected var homeState = HomeState()
             set(value) {
