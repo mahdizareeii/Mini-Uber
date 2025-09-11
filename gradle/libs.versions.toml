@@ -3,7 +3,7 @@ agp = "8.10.1"
 android-compileSdk = "36"
 android-minSdk = "21"
 android-targetSdk = "36"
-androidx-activity = "1.10.1"
+androidx-activity = "1.11.0"
 androidx-appcompat = "1.7.1"
 androidx-core = "1.17.0"
 androidx-espresso = "3.7.0"
@@ -13,7 +13,7 @@ composeMultiplatform = "1.8.2"
 junit = "4.13.2"
 koinCore = "4.1.1"
 kotlin = "2.2.10"
-navigationCompose = "2.9.0-beta05"
+navigationCompose = "2.9.0-rc01"
 
 [libraries]
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }

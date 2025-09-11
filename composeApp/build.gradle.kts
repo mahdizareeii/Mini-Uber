@@ -15,6 +15,7 @@ kotlin {
     }
     
     listOf(
+        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -30,7 +31,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
-            implementation(libs.koin.core)
+            //implementation(libs.koin.core)
             implementation(libs.navigation.compose)
             implementation(compose.runtime)
             implementation(compose.foundation)
