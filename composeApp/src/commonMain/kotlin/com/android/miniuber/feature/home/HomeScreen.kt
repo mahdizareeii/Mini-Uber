@@ -32,8 +32,8 @@ fun HomeScreen(
     var homeState by remember { mutableStateOf(HomeState()) }
 
     when (val state = uiState) {
-        is UiState.Init -> {
-            LaunchedEffect("init") { presenter.onEvent(HomeEvent.LoadDrivers) }
+        is UiState.Init -> LaunchedEffect("init") {
+            presenter.onEvent(HomeEvent.LoadDrivers)
         }
 
         is UiState.Success -> {
@@ -49,7 +49,9 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        if (uiState is UiState.Loading) { CircularProgressIndicator() }
+        if (uiState is UiState.Loading) {
+            CircularProgressIndicator()
+        }
 
         homeState.drivers.forEach { d ->
             Text("${d.name} - ETA ${d.etaMinutes}min")
