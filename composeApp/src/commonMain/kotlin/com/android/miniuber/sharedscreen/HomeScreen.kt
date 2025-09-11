@@ -22,14 +22,13 @@ import androidx.compose.ui.unit.dp
 import com.android.miniuber.domain.model.RideRequest
 import com.android.miniuber.domain.viper.contract.home.HomeContract
 import com.android.miniuber.domain.viper.contract.home.HomeEvent
-import com.android.miniuber.domain.viper.contract.home.HomeUiState
+import com.android.miniuber.domain.viper.contract.home.HomeState
 import com.android.miniuber.util.UiState
 
 @Composable
 fun HomeScreen(presenter: HomeContract.Presenter) {
     val uiState by presenter.uiState.collectAsState()
-
-    var homeUiState by remember { mutableStateOf(HomeUiState()) }
+    var homeState by remember { mutableStateOf(HomeState()) }
 
     when (val state = uiState) {
         is UiState.Init -> {
@@ -37,7 +36,7 @@ fun HomeScreen(presenter: HomeContract.Presenter) {
         }
 
         is UiState.Success -> {
-            homeUiState = state.data
+            homeState = state.data
         }
 
         is UiState.Error -> Text("Error: ${state.message}")
@@ -51,7 +50,7 @@ fun HomeScreen(presenter: HomeContract.Presenter) {
     ) {
         if (uiState is UiState.Loading) { CircularProgressIndicator() }
 
-        homeUiState.drivers.forEach { d ->
+        homeState.drivers.forEach { d ->
             Text("${d.name} - ETA ${d.etaMinutes}min")
             Button(
                 onClick = {

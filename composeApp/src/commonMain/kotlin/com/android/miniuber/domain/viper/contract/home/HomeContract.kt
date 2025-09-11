@@ -15,13 +15,13 @@ sealed interface HomeEvent {
     data class RequestRide(val request: RideRequest) : HomeEvent
 }
 
-data class HomeUiState(
+data class HomeState(
     val drivers: List<DriverResponse> = listOf()
 )
 
 interface HomeContract: BaseContract {
-    abstract class Presenter : BaseContract.Presenter<HomeEvent, HomeUiState>() {
-        protected var homeUiState = HomeUiState()
+    abstract class Presenter : BaseContract.Presenter<HomeEvent, HomeState>() {
+        protected var homeState = HomeState()
             set(value) {
                 field = value
                 _uiState.update { UiState.Success(value) }

@@ -20,33 +20,33 @@ class HomePresenter(
         when (event) {
             is HomeEvent.LoadDrivers -> loadDrivers()
             is HomeEvent.RequestRide -> requestRide(event.request)
-            is HomeEvent.NavigateBack -> router.navigator.navigateUp()
+            is HomeEvent.NavigateBack -> router.navigateBack()
         }
     }
 
     private fun loadDrivers() {
         _uiState.update { UiState.Loading }
         viewModelScope.launch {
-            val result = interactor.getNearbyDrivers(LocationRequest(37.7749, -122.4194))
-            if (result.isSuccess) {
-                homeUiState = homeUiState.copy(
-                    drivers = result.getOrNull() ?: listOf()
-                )
-            } else {
-                _uiState.update { UiState.Error(result.exceptionOrNull()?.message) }
-            }
+            interactor.getNearbyDrivers(LocationRequest(37.7749, -122.4194))
+                .onSuccess { result ->
+                    homeState = homeState.copy(drivers = result)
+                }
+                .onFailure { error ->
+                    _uiState.update { UiState.Error(error.message) }
+                }
         }
     }
 
     private fun requestRide(request: RideRequest) {
         _uiState.update { UiState.Loading }
         viewModelScope.launch {
-            val result = interactor.requestRide(request)
-            if (result.isSuccess) {
-                router.navigator.navigate(AppRoute.Ride.route)
-            } else {
-                _uiState.update { UiState.Error(error = result.exceptionOrNull()?.message) }
-            }
+            interactor.requestRide(request)
+                .onSuccess { result ->
+                    router.navigate(AppRoute.Ride.route)
+                }
+                .onFailure { error ->
+                    _uiState.update { UiState.Error(error = error.message) }
+                }
         }
     }
 }
