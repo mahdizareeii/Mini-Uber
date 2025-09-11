@@ -21,10 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.android.miniuber.domain.model.RideRequest
 import com.android.miniuber.core.base.UiState
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun HomeScreen(presenter: HomeContract.Presenter) {
-    val uiState by presenter.uiState.collectAsState()
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    presenter: HomeContract.Presenter = koinViewModel()
+) {
+    val uiState by presenter.state.collectAsState()
     var homeState by remember { mutableStateOf(HomeState()) }
 
     when (val state = uiState) {
@@ -41,7 +45,7 @@ fun HomeScreen(presenter: HomeContract.Presenter) {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

@@ -6,14 +6,15 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface BaseContract {
     interface View<UI_STATE> {
-        val uiState: StateFlow<UiState<UI_STATE>>
+        val _state: MutableStateFlow<UiState<UI_STATE>>
+        val state: StateFlow<UiState<UI_STATE>>
     }
 
     abstract class Presenter<EVENT, UI_STATE>(
         initialState: UiState<UI_STATE> = UiState.Init
     ) : ViewModel(), View<UI_STATE> {
-        protected val _uiState = MutableStateFlow<UiState<UI_STATE>>(initialState)
-        override val uiState: StateFlow<UiState<UI_STATE>> get() = _uiState
+        override val _state = MutableStateFlow<UiState<UI_STATE>>(initialState)
+        override val state: StateFlow<UiState<UI_STATE>> get() = _state
         abstract fun onEvent(event: EVENT)
     }
 

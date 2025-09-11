@@ -9,7 +9,7 @@ import com.android.miniuber.feature.home.HomeContract
 
 //can separate concern of business logics by injecting use case
 //Handle business login here like (use cases)
-class HomeInteractor(private val repository: DriverRepository) : HomeContract.Interactor() {
+class HomeInteractor(private val repository: DriverRepository) : HomeContract.Interactor {
     override suspend fun getNearbyDrivers(
         location: LocationRequest
     ): Result<List<DriverResponse>> {
