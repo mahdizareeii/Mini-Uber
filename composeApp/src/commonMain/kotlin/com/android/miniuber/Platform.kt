@@ -7,24 +7,23 @@ import com.android.miniuber.feature.featureModule
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 
+expect fun getPlatform(): Platform
+
 interface Platform {
     val name: String
     fun generateUuid(): String
-
-    fun initKoin(koinContext: (KoinApplication) -> Unit) {
-        startKoin {
-            koinContext.invoke(this)
-            modules(getPlatform().getKoinModules())
-        }
-    }
-
-    fun getKoinModules() = listOf(
-        featureModule,
-        domainModule,
-        dataModule,
-        coreModule
-    )
-
 }
 
-expect fun getPlatform(): Platform
+fun initKoin(koinContext: (KoinApplication) -> Unit) {
+    startKoin {
+        koinContext.invoke(this)
+        modules(getKoinModules())
+    }
+}
+
+fun getKoinModules() = listOf(
+    featureModule,
+    domainModule,
+    dataModule,
+    coreModule
+)

@@ -22,8 +22,7 @@ struct ContentView: View {
 }
 
 private func initKoinSetup() -> some View {
-    getPlatform().doInitKoin { koinContext in }
-    //KoinModuleKt.doInitKoin { koinContext in }
+    PlatformKt.doInitKoin { koinContext in }
     return EmptyView()
 }
 

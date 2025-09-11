@@ -7,9 +7,8 @@ class MainAndroidApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        getPlatform().initKoin { koinContext ->
+        initKoin { koinContext ->
             koinContext.androidContext(this@MainAndroidApp)
         }
     }
-
 }
