@@ -19,7 +19,5 @@ interface BaseContract {
 
     interface Interactor
 
-    interface Router {
-        val navController: NavController
-    }
+    interface Router { val navigator: NavController }
 }

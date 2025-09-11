@@ -10,16 +10,16 @@ import com.android.miniuber.util.UiState
 import kotlinx.coroutines.flow.update
 
 sealed interface HomeEvent {
+    data object NavigateBack : HomeEvent
     data object LoadDrivers : HomeEvent
     data class RequestRide(val request: RideRequest) : HomeEvent
-    data object NavigateBack : HomeEvent
 }
 
 data class HomeUiState(
     val drivers: List<DriverResponse> = listOf()
 )
 
-interface HomeContract {
+interface HomeContract: BaseContract {
     abstract class Presenter : BaseContract.Presenter<HomeEvent, HomeUiState>() {
         protected var homeUiState = HomeUiState()
             set(value) {

@@ -44,16 +44,13 @@ fun HomeScreen(presenter: HomeContract.Presenter) {
         else -> {}
     }
 
-    if (uiState is UiState.Loading) {
-        CircularProgressIndicator()
-        return
-    }
-
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        if (uiState is UiState.Loading) { CircularProgressIndicator() }
+
         homeUiState.drivers.forEach { d ->
             Text("${d.name} - ETA ${d.etaMinutes}min")
             Button(
