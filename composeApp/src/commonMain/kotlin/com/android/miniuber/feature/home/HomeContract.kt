@@ -19,7 +19,12 @@ interface HomeContract : BaseContract {
     }
 
     abstract class Interactor : BaseContract.Interactor {
-        abstract suspend fun getNearbyDrivers(location: LocationRequest): Result<List<DriverResponse>>
-        abstract suspend fun requestRide(request: RideRequest): Result<RideResponse>
+        abstract suspend fun getNearbyDrivers(
+            location: LocationRequest
+        ): Result<List<DriverResponse>>
+
+        abstract suspend fun requestRide(
+            request: RideRequest
+        ): Result<RideResponse>
     }
 }
