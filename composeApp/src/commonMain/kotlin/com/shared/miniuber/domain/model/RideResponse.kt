@@ -1,0 +1,10 @@
+package com.shared.miniuber.domain.model
+
+import com.shared.miniuber.getPlatform
+
+data class RideResponse(
+    val id: String,
+    val pickup: LocationResponse,
+    val dropOff: LocationResponse,
+    val requestedAt: String = getPlatform().generateUuid()
+)

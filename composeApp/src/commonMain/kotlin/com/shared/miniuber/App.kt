@@ -1,0 +1,39 @@
+@file:OptIn(KoinExperimentalAPI::class)
+
+package com.shared.miniuber
+
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.shared.miniuber.core.AppRoute
+import com.shared.miniuber.core.ComposeRouter
+import com.shared.miniuber.feature.home.HomeScreen
+import com.shared.miniuber.feature.ride.RideScreen
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.getKoin
+import org.koin.core.annotation.KoinExperimentalAPI
+
+@Composable
+@Preview
+fun App() {
+    MaterialTheme {
+        val navController = rememberNavController()
+        //init App router
+        getKoin().get<ComposeRouter>().initNavController(navController)
+
+        NavHost(
+            navController = navController,
+            startDestination = AppRoute.Home.route
+        ) {
+            composable(route = AppRoute.Home.route) {
+                HomeScreen()
+            }
+
+            composable(AppRoute.Ride.route) {
+                RideScreen()
+            }
+        }
+    }
+}
