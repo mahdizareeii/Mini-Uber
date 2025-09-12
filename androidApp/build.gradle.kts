@@ -50,8 +50,7 @@ android {
         implementation(compose.components.resources)
         implementation(compose.components.uiToolingPreview)
         implementation(libs.androidx.activity.compose)
-        implementation(libs.androidx.lifecycle.viewmodelCompose)
-        implementation(libs.androidx.lifecycle.runtimeCompose)
+        implementation(libs.bundles.composeBundle)
 
         //koin
         implementation(libs.bundles.koinBundle)
