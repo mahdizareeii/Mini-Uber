@@ -31,20 +31,16 @@ kotlin {
         }
         commonMain.dependencies {
             //koin
-            implementation(libs.bundles.koin)
-
-            //compose navigation
-            implementation(libs.navigation.compose)
+            implementation(libs.bundles.koinBundle)
 
             //compose
+            implementation(libs.bundles.composeBundle)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
         }
         iosMain.dependencies {
 

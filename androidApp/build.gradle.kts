@@ -38,25 +38,23 @@ android {
     dependencies {
         implementation(projects.composeApp)
 
-        debugImplementation(compose.uiTooling)
-        implementation(compose.preview)
-        implementation(libs.androidx.activity.compose)
+        implementation(libs.androidx.core.ktx)
 
         //compose
+        debugImplementation(compose.uiTooling)
+        implementation(compose.preview)
         implementation(compose.runtime)
         implementation(compose.foundation)
         implementation(compose.material3)
         implementation(compose.ui)
         implementation(compose.components.resources)
         implementation(compose.components.uiToolingPreview)
+        implementation(libs.androidx.activity.compose)
         implementation(libs.androidx.lifecycle.viewmodelCompose)
         implementation(libs.androidx.lifecycle.runtimeCompose)
 
         //koin
-        implementation(libs.bundles.koin)
+        implementation(libs.bundles.koinBundle)
     }
-}
-dependencies {
-    implementation(libs.androidx.core.ktx)
 }
 

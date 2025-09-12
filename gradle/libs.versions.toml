@@ -46,14 +46,14 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 
 [bundles]
-compose = [
+composeBundle = [
     "androidx-activity-compose",
     "androidx-lifecycle-viewmodelCompose",
     "androidx-lifecycle-runtimeCompose",
     "navigation-compose",
 ]
 
-koin = [
+koinBundle = [
     "koin-core",
     "koin-compose",
     "koin-compose-viewmodel",
