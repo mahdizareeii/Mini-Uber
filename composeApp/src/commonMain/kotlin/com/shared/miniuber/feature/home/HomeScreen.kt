@@ -78,7 +78,7 @@ fun HomeScreen(
         Button(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 100.dp),
+                .padding(bottom = 20.dp),
             onClick = { presenter.onEvent(HomeEvent.OnConfirmButtonClicked) },
             content = {
                 if (uiState is UiState.Loading)

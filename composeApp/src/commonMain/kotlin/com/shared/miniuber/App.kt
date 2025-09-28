@@ -2,10 +2,17 @@
 
 package com.shared.miniuber
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.add
+import androidx.compose.foundation.layout.exclude
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -45,6 +52,9 @@ fun App() {
         getKoin().get<ComposeRouter>().initNavController(navController)
 
         NavHost(
+            modifier = Modifier.windowInsetsPadding(
+                insets = WindowInsets.ime.add(WindowInsets.navigationBars)
+            ),
             navController = navController,
             startDestination = AppRoute.Home.route
         ) {
