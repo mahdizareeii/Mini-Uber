@@ -27,7 +27,7 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-
+            implementation(libs.map.compose)
         }
         commonMain.dependencies {
             //koin

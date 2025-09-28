@@ -40,6 +40,8 @@ android {
 
         implementation(libs.androidx.core.ktx)
 
+        implementation(libs.map.compose)
+
         //compose
         debugImplementation(compose.uiTooling)
         implementation(compose.preview)

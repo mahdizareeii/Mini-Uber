@@ -9,7 +9,7 @@ sealed class AppRoute(
         deepLink = "home"
     )
 
-    data object Ride: AppRoute(
+    data object Ride : AppRoute(
         route = "ride",
         deepLink = "ride"
     )

@@ -1,0 +1,5 @@
+<resources>
+    <string name="pickup_location">Pickup</string>
+    <string name="drop_off">DropOff</string>
+    <string name="search_driver">Search Driver</string>
+</resources>

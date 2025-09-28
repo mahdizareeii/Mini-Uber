@@ -1,13 +1,14 @@
 package com.shared.miniuber.component.map
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-
-class MapState(map: KmpMap) {
-
-
-
+data class MapState(
+    val startPoint: LatLng? = null,
+    val endPoint: LatLng? = null
+) {
+    data class LatLng(
+        val latitude: Double,
+        val longitude: Double
+    )
 }
 
-@Composable
-fun rememberMapState(map: KmpMap): MapState { return remember { MapState(map) } }
+//@Composable
+//fun rememberMapState(map: KmpMap): MapState { return remember { MapState(map) } }

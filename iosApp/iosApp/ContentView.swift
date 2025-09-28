@@ -1,12 +1,16 @@
 import UIKit
 import SwiftUI
 import ComposeApp
+import GoogleMaps
 
 struct ComposeView: UIViewControllerRepresentable {
 
-
     func makeUIViewController(context: Context) -> UIViewController {
-        MainViewControllerKt.MainViewController()
+        MainViewControllerKt.MainViewController(
+            mapUiViewController: { camera in
+                return MapViewController(onCameraChanged: camera)
+            }
+        )
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
@@ -15,10 +19,16 @@ struct ComposeView: UIViewControllerRepresentable {
 
 struct ContentView: View {
     var body: some View {
+        initGoogleMap()
         initKoinSetup()
         ComposeView()
             .ignoresSafeArea()
     }
+}
+
+private func initGoogleMap() -> some View {
+    GMSServices.provideAPIKey("AIzaSyAtRVvG3Be3xXiZFR7xp-K-9hy4nZ4hMFs")
+    return EmptyView()
 }
 
 private func initKoinSetup() -> some View {

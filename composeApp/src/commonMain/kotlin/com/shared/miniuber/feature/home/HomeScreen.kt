@@ -1,11 +1,9 @@
 // commonMain
 package com.shared.miniuber.feature.home
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -19,8 +17,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.shared.miniuber.domain.model.RideRequest
+import com.shared.miniuber.component.AimComponent
+import com.shared.miniuber.component.map.GoogleMapComponent
 import com.shared.miniuber.core.base.UiState
+import com.shared.miniuber.core.collectAsEffect
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -31,9 +32,13 @@ fun HomeScreen(
     val uiState by presenter.state.collectAsState()
     var homeState by remember { mutableStateOf(HomeState()) }
 
+    presenter.action.collectAsEffect {
+
+    }
+
     when (val state = uiState) {
         is UiState.Init -> LaunchedEffect("init") {
-            presenter.onEvent(HomeEvent.LoadDrivers)
+
         }
 
         is UiState.Success -> {
@@ -44,32 +49,29 @@ fun HomeScreen(
         else -> {}
     }
 
-    Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
+    Box(modifier = modifier.fillMaxSize()) {
         if (uiState is UiState.Loading) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
 
-        homeState.drivers.forEach { d ->
-            Text("${d.name} - ETA ${d.etaMinutes}min")
-            Button(
-                onClick = {
-                    presenter.onEvent(
-                        event = HomeEvent.RequestRide(
-                            request = RideRequest(
-                                pickup = d.location,
-                                dropOff = d.location
-                            )
-                        )
-                    )
-                }
-            ) {
-                Text("Request Ride")
+        GoogleMapComponent(
+            modifier = Modifier.fillMaxSize(),
+            state = homeState.mapState,
+            onCameraChanged = { latLng ->
+                presenter.onEvent(event = HomeEvent.OnMapStateUpdated(latLng))
             }
-            Spacer(Modifier.height(8.dp))
-        }
+        )
+
+        AimComponent(Modifier.align(Alignment.Center))
+
+        Button(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 100.dp),
+            onClick = { presenter.onEvent(HomeEvent.OnConfirmButtonClicked) },
+            content = {
+                Text(text = stringResource(resource = homeState.confirmButtonState.text))
+            },
+        )
     }
 }
