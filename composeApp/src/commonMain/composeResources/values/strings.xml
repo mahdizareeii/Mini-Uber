@@ -2,4 +2,8 @@
     <string name="pickup_location">Pickup</string>
     <string name="drop_off">DropOff</string>
     <string name="search_driver">Search Driver</string>
+    <string name="drivers_count">Drivers %1$s</string>
+    <string name="destination">Destination</string>
+    <string name="pickup">Pickup</string>
+    <string name="starting_location">Starting Location</string>
 </resources>

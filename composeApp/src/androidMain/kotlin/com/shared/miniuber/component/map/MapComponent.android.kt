@@ -17,7 +17,7 @@ import com.google.maps.android.compose.rememberUpdatedMarkerState
 actual fun GoogleMapComponent(
     modifier: Modifier,
     state: MapState,
-    onCameraChanged: (latLng: MapState.LatLng) -> Unit
+    onCameraChanged: (latLng: MapState.LatLng) -> Unit,
 ) {
     val startMarkerState = rememberUpdatedMarkerState()
     val endMarkerState = rememberUpdatedMarkerState()
@@ -33,12 +33,12 @@ actual fun GoogleMapComponent(
     }
 
     val startPoint = LatLng(
-        /* latitude = */ state.startPoint?.latitude ?: 0.0,
-        /* longitude = */ state.startPoint?.longitude ?: 0.0
+        /* latitude = */ state.startPoint?.latLng?.latitude ?: 0.0,
+        /* longitude = */ state.startPoint?.latLng?.longitude ?: 0.0
     )
     val endPoint = LatLng(
-        /* latitude = */ state.endPoint?.latitude ?: 0.0,
-        /* longitude = */ state.endPoint?.longitude ?: 0.0
+        /* latitude = */ state.endPoint?.latLng?.latitude ?: 0.0,
+        /* longitude = */ state.endPoint?.latLng?.longitude ?: 0.0
     )
 
     startMarkerState.position = startPoint
@@ -72,8 +72,8 @@ actual fun GoogleMapComponent(
         if (state.startPoint != null) {
             Marker(
                 state = startMarkerState,
-                title = "Pickup",
-                snippet = "Starting Location",
+                title = state.startPoint.title,
+                snippet = state.startPoint.snipped,
                 icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
             )
         }
@@ -81,8 +81,8 @@ actual fun GoogleMapComponent(
         if (state.endPoint != null) {
             Marker(
                 state = endMarkerState,
-                title = "Drop-off",
-                snippet = "Destination",
+                title = state.endPoint.title,
+                snippet = state.endPoint.snipped,
                 icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
             )
         }

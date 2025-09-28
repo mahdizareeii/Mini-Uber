@@ -1,11 +1,13 @@
 // commonMain
 package com.shared.miniuber.feature.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.shared.miniuber.component.AimComponent
+import com.shared.miniuber.component.LoadingComponent
 import com.shared.miniuber.component.map.GoogleMapComponent
 import com.shared.miniuber.core.base.UiState
 import com.shared.miniuber.core.collectAsEffect
@@ -38,7 +41,7 @@ fun HomeScreen(
 
     when (val state = uiState) {
         is UiState.Init -> LaunchedEffect("init") {
-
+            presenter.onEvent(HomeEvent.Init)
         }
 
         is UiState.Success -> {
@@ -50,16 +53,24 @@ fun HomeScreen(
     }
 
     Box(modifier = modifier.fillMaxSize()) {
-        if (uiState is UiState.Loading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        }
-
         GoogleMapComponent(
             modifier = Modifier.fillMaxSize(),
             state = homeState.mapState,
             onCameraChanged = { latLng ->
                 presenter.onEvent(event = HomeEvent.OnMapStateUpdated(latLng))
             }
+        )
+
+        Text(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 50.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.background,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .padding(horizontal = 10.dp, vertical = 5.dp),
+            text = homeState.driversCountState.text
         )
 
         AimComponent(Modifier.align(Alignment.Center))
@@ -70,7 +81,10 @@ fun HomeScreen(
                 .padding(bottom = 100.dp),
             onClick = { presenter.onEvent(HomeEvent.OnConfirmButtonClicked) },
             content = {
-                Text(text = stringResource(resource = homeState.confirmButtonState.text))
+                if (uiState is UiState.Loading)
+                    LoadingComponent()
+                else
+                    Text(text = stringResource(resource = homeState.confirmButtonState.text))
             },
         )
     }
