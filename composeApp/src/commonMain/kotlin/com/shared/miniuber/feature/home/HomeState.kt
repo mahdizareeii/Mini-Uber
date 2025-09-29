@@ -9,7 +9,8 @@ data class HomeState(
     val cameraPosition: MapState.LatLng = MapState.LatLng(0.0, 0.0),
     val mapState: MapState = MapState(),
     val driversCountState: DriversCountState = DriversCountState(text = "..."),
-    val confirmButtonState: ButtonState = ButtonState(text = Res.string.pickup_location)
+    val confirmButtonState: ButtonState = ButtonState(text = Res.string.pickup_location),
+    val cancelButtonState: ButtonState? = null,
 ) {
     data class ButtonState(val text: StringResource)
     data class DriversCountState(val text: String)

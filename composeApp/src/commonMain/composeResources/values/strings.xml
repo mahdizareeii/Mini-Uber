@@ -6,4 +6,5 @@
     <string name="destination">Destination</string>
     <string name="pickup">Pickup</string>
     <string name="starting_location">Starting Location</string>
+    <string name="close_symbol">✖</string>
 </resources>

@@ -2,7 +2,9 @@
 package com.shared.miniuber.feature.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -75,17 +77,31 @@ fun HomeScreen(
 
         AimComponent(Modifier.align(Alignment.Center))
 
-        Button(
-            modifier = Modifier
+
+        Row(
+            Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 20.dp),
-            onClick = { presenter.onEvent(HomeEvent.OnConfirmButtonClicked) },
-            content = {
-                if (uiState is UiState.Loading)
-                    LoadingComponent()
-                else
-                    Text(text = stringResource(resource = homeState.confirmButtonState.text))
-            },
-        )
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            Button(
+                onClick = { presenter.onEvent(HomeEvent.OnConfirmButtonClicked) },
+                content = {
+                    if (uiState is UiState.Loading)
+                        LoadingComponent()
+                    else
+                        Text(text = stringResource(resource = homeState.confirmButtonState.text))
+                },
+            )
+
+            homeState.cancelButtonState?.also { cancelState ->
+                Button(
+                    onClick = { presenter.onEvent(HomeEvent.OnCancelButtonClicked) },
+                    content = {
+                        Text(text = stringResource(resource = cancelState.text))
+                    },
+                )
+            }
+        }
     }
 }
