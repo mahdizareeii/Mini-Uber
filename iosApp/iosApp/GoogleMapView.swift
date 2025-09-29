@@ -33,8 +33,6 @@ class MapViewController: UIViewController, KmpMap, GMSMapViewDelegate {
             zoom: state.cameraZoom
         )
         mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
-//        let camera = GMSCameraPosition.camera(withLatitude: 0, longitude: 0, zoom: 1)
-//        mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
         view.addSubview(mapView)
@@ -43,6 +41,58 @@ class MapViewController: UIViewController, KmpMap, GMSMapViewDelegate {
     func updateState(state: MapState) {
         self.state = state
         mapView.clear()
+        
+        
+        if let start = state.startPoint, let end = state.endPoint {
+            // Add start & end markers
+            let startMarker = GMSMarker(
+                position: CLLocationCoordinate2D(
+                    latitude: start.latLng.latitude,
+                    longitude: start.latLng.longitude
+                )
+            )
+            startMarker.icon = GMSMarker.markerImage(with: .green)
+            startMarker.map = mapView
+            
+            let endMarker = GMSMarker(
+                position: CLLocationCoordinate2D(
+                    latitude: end.latLng.latitude,
+                    longitude: end.latLng.longitude
+                )
+            )
+            endMarker.icon = GMSMarker.markerImage(with: .red)
+            endMarker.map = mapView
+            
+            let curvePoints = generateCurvePoints(
+                start: CLLocationCoordinate2D(
+                    latitude: start.latLng.latitude,
+                    longitude: start.latLng.longitude
+                ),
+                end: CLLocationCoordinate2D(
+                    latitude: end.latLng.latitude,
+                    longitude: end.latLng.longitude
+                ),
+                curveHeight: 0.2
+            )
+            
+            let polyline = drawCurve(on: mapView, points: [])
+            
+            animatePolyline(polyline: polyline, points: curvePoints)
+            
+            let bounds = GMSCoordinateBounds(
+                coordinate: CLLocationCoordinate2D(
+                    latitude: start.latLng.latitude,
+                    longitude: start.latLng.longitude
+                ),
+                coordinate: CLLocationCoordinate2D(
+                    latitude: end.latLng.latitude,
+                    longitude: end.latLng.longitude
+                )
+            )
+            mapView.animate(with: GMSCameraUpdate.fit(bounds, withPadding: 100))
+        }
+        
+        
         var bounds = GMSCoordinateBounds()
         
         if let start = state.startPoint {
@@ -114,5 +164,66 @@ class MapViewController: UIViewController, KmpMap, GMSMapViewDelegate {
         )
         _ = onCameraChanged(latLng)
     }
+    
+    func animatePolyline(
+        polyline: GMSPolyline,
+        points: [CLLocationCoordinate2D],
+        interval: TimeInterval = 0.01
+    ) {
+        let path = GMSMutablePath()
+        polyline.path = path
+        
+        DispatchQueue.global(qos: .userInteractive).async {
+            for point in points {
+                DispatchQueue.main.async {
+                    path.add(point)
+                    polyline.path = path
+                }
+                Thread.sleep(forTimeInterval: interval)
+            }
+        }
+    }
+    
+    func drawCurve(on mapView: GMSMapView, points: [CLLocationCoordinate2D]) -> GMSPolyline {
+        let path = GMSMutablePath()
+        for point in points {
+            path.add(point)
+        }
+        let polyline = GMSPolyline(path: path)
+        polyline.strokeWidth = 6
+        polyline.strokeColor = UIColor.black
+        polyline.geodesic = true
+        polyline.map = mapView
+        return polyline
+    }
+    
+    func generateCurvePoints(
+        start: CLLocationCoordinate2D,
+        end: CLLocationCoordinate2D,
+        curveHeight: Double = 0.1,
+        numPoints: Int = 100
+    ) -> [CLLocationCoordinate2D] {
+        var points: [CLLocationCoordinate2D] = []
+        
+        let midLat = (start.latitude + end.latitude) / 2
+        let midLng = (start.longitude + end.longitude) / 2
+        
+        let dx = end.longitude - start.longitude
+        let dy = end.latitude - start.latitude
+        
+        let controlLat = midLat + (-dx * curveHeight)
+        let controlLng = midLng + (dy * curveHeight)
+        
+        for i in 0...numPoints {
+            let t = Double(i) / Double(numPoints)
+            let lat = pow(1 - t, 2) * start.latitude + 2 * (1 - t) * t * controlLat + pow(t, 2) * end.latitude
+            let lng = pow(1 - t, 2) * start.longitude + 2 * (1 - t) * t * controlLng + pow(t, 2) * end.longitude
+            points.append(CLLocationCoordinate2D(latitude: lat, longitude: lng))
+        }
+        
+        return points
+    }
+    
+    
 }
 
