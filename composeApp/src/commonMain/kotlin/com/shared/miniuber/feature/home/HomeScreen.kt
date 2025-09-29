@@ -98,10 +98,7 @@ fun HomeScreen(
                 Button(
                     onClick = { presenter.onEvent(HomeEvent.OnCancelButtonClicked) },
                     content = {
-                        Text(
-                            text = stringResource(resource = cancelState.text),
-                            color = MaterialTheme.colorScheme.background
-                        )
+                        Text(text = stringResource(resource = cancelState.text))
                     },
                 )
             }
