@@ -8,10 +8,15 @@ import SwiftUI
 import ComposeApp
 
 class MapViewController: UIViewController, KmpMap, GMSMapViewDelegate {
-    private let onCameraChanged: (MapState.LatLng) -> KotlinUnit
     private var mapView: GMSMapView!
+    private var state: MapState
+    private let onCameraChanged: (MapState.LatLng) -> KotlinUnit
     
-    init(onCameraChanged: @escaping (MapState.LatLng) -> KotlinUnit) {
+    init(
+        state: MapState,
+        onCameraChanged: @escaping (MapState.LatLng) -> KotlinUnit
+    ) {
+        self.state = state
         self.onCameraChanged = onCameraChanged
         super.init(nibName: nil, bundle: nil)
     }
@@ -22,15 +27,21 @@ class MapViewController: UIViewController, KmpMap, GMSMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let camera = GMSCameraPosition.camera(withLatitude: 0, longitude: 0, zoom: 1)
+        let camera = GMSCameraPosition.camera(
+            withLatitude: state.cameraPosition.latitude,
+            longitude: state.cameraPosition.longitude,
+            zoom: state.cameraZoom
+        )
         mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
+//        let camera = GMSCameraPosition.camera(withLatitude: 0, longitude: 0, zoom: 1)
+//        mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
         view.addSubview(mapView)
     }
     
     func updateState(state: MapState) {
+        self.state = state
         mapView.clear()
         var bounds = GMSCoordinateBounds()
         
@@ -71,7 +82,7 @@ class MapViewController: UIViewController, KmpMap, GMSMapViewDelegate {
                         latitude: start.latLng.latitude,
                         longitude: start.latLng.longitude
                     ),
-                    zoom: 10
+                    zoom: state.cameraZoom
                 )
             )
         } else if let end = state.endPoint {
@@ -81,7 +92,7 @@ class MapViewController: UIViewController, KmpMap, GMSMapViewDelegate {
                         latitude: end.latLng.latitude,
                         longitude: end.latLng.longitude
                     ),
-                    zoom: 10
+                    zoom: state.cameraZoom
                 )
             )
         }

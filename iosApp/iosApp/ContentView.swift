@@ -7,8 +7,8 @@ struct ComposeView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIViewController {
         MainViewControllerKt.MainViewController(
-            mapUiViewController: { camera in
-                return MapViewController(onCameraChanged: camera)
+            mapUiViewController: { state, camera in
+                return MapViewController(state: state, onCameraChanged: camera)
             }
         )
     }

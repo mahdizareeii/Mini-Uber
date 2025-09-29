@@ -6,6 +6,7 @@ import platform.UIKit.UIViewController
 
 fun MainViewController(
     mapUiViewController: (
+        state: MapState,
         onCameraChanged: (latLng: MapState.LatLng) -> Unit
     ) -> UIViewController
 ) = ComposeUIViewController {
@@ -14,5 +15,6 @@ fun MainViewController(
 }
 
 lateinit var mapViewController: (
+    state: MapState,
     onCameraChanged: (latLng: MapState.LatLng) -> Unit
 ) -> UIViewController

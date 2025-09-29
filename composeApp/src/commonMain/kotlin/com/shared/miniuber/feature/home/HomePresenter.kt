@@ -36,7 +36,7 @@ class HomePresenter(
                 is HomeEvent.Init -> init()
                 is HomeEvent.NavigateBack -> router.navigateBack()
                 is HomeEvent.OnMapStateUpdated -> {
-                    homeState = homeState.copy(cameraPosition = event.latLng)
+                    homeState.mapState.cameraPosition = event.latLng
                     getNearbyDrivers()
                 }
 
@@ -50,7 +50,7 @@ class HomePresenter(
                             homeState = homeState.copy(
                                 mapState = homeState.mapState.copy(
                                     startPoint = MarkerData(
-                                        latLng = homeState.cameraPosition,
+                                        latLng = homeState.mapState.cameraPosition,
                                         title = getString(Res.string.pickup),
                                         snipped = getString(Res.string.starting_location)
                                     )
@@ -66,7 +66,7 @@ class HomePresenter(
                             homeState = homeState.copy(
                                 mapState = homeState.mapState.copy(
                                     endPoint = MarkerData(
-                                        latLng = homeState.cameraPosition,
+                                        latLng = homeState.mapState.cameraPosition,
                                         title = getString(Res.string.drop_off),
                                         snipped = getString(Res.string.destination)
                                     )
@@ -110,8 +110,8 @@ class HomePresenter(
         viewModelScope.launch {
             interactor.getNearbyDrivers(
                 LocationRequest(
-                    lat = homeState.cameraPosition.latitude,
-                    lng = homeState.cameraPosition.longitude
+                    lat = homeState.mapState.cameraPosition.latitude,
+                    lng = homeState.mapState.cameraPosition.longitude
                 )
             ).onSuccess { result ->
                 homeState = homeState.copy(

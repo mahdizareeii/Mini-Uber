@@ -3,9 +3,11 @@ package com.shared.miniuber.component.map
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.compose.GoogleMap
@@ -21,7 +23,15 @@ actual fun GoogleMapComponent(
 ) {
     val startMarkerState = rememberUpdatedMarkerState()
     val endMarkerState = rememberUpdatedMarkerState()
-    val cameraPositionState = rememberCameraPositionState()
+    val cameraPositionState = rememberCameraPositionState() {
+        position = CameraPosition.fromLatLngZoom(
+            LatLng(
+                state.cameraPosition.latitude,
+                state.cameraPosition.longitude
+            ),
+            state.cameraZoom
+        )
+    }
 
     LaunchedEffect(cameraPositionState.position) {
         onCameraChanged(
@@ -56,11 +66,11 @@ actual fun GoogleMapComponent(
             )
         } else if (state.startPoint != null) {
             cameraPositionState.animate(
-                update = CameraUpdateFactory.newLatLngZoom(startPoint, 10f)
+                update = CameraUpdateFactory.newLatLngZoom(startPoint, state.cameraZoom)
             )
         } else if (state.endPoint != null) {
             cameraPositionState.animate(
-                update = CameraUpdateFactory.newLatLngZoom(endPoint, 10f)
+                update = CameraUpdateFactory.newLatLngZoom(endPoint, state.cameraZoom)
             )
         }
     }

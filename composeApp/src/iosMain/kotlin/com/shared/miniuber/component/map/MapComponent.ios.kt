@@ -14,7 +14,7 @@ actual fun GoogleMapComponent(
     UIKitViewController(
         modifier = modifier,
         factory = {
-            mapViewController.invoke(onCameraChanged)
+            mapViewController.invoke(state, onCameraChanged)
         },
         update = { controller ->
             if (controller is KmpMap) { controller.updateState(state) }
