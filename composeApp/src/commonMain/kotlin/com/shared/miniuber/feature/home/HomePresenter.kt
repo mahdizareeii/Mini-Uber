@@ -79,6 +79,12 @@ class HomePresenter(
                                 markerState = homeState.markerState.copy(visible = false)
                             )
                         }
+
+                        else -> router.navigate(
+                            route = AppRoute.RideRequest.route,
+                            popUpTo = AppRoute.Home.route,
+                            popUpToInclusive = true
+                        )
                     }
                 }
 
@@ -134,19 +140,26 @@ class HomePresenter(
         _state.update { UiState.Loading }
         viewModelScope.launch {
             interactor.getLastTrip().onSuccess {
-                when(it.state) {
+                when (val state = it.state) {
                     is TripResponse.TripState.EndTrip -> {
                         homeState = homeState
                     }
+
                     is TripResponse.TripState.NoTrip -> {
                         homeState = homeState
                     }
+
                     is TripResponse.TripState.OnTrip -> {
                         homeState = homeState
                     }
-                    is TripResponse.TripState.LookingForDriver -> {
+
+                    is TripResponse.TripState.RideRequest -> {
                         homeState = homeState
-                        router.navigate(route = AppRoute.SearchDriver.route)
+                        router.navigate(
+                            route = AppRoute.RideRequest.route,
+                            popUpTo = AppRoute.Home.route,
+                            popUpToInclusive = true
+                        )
                     }
                 }
             }.onFailure { error ->

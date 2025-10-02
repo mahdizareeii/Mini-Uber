@@ -17,12 +17,6 @@ class HomeInteractor(private val repository: DriverRepository) : HomeContract.In
         return repository.fetchNearbyDrivers(location)
     }
 
-    override suspend fun requestRide(
-        request: RideRequest
-    ): Result<RideResponse> {
-        return repository.requestRide(request)
-    }
-
     override suspend fun getLastTrip(): Result<TripResponse> {
         return repository.getLastTrip()
     }

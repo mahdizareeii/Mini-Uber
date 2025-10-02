@@ -18,7 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.shared.miniuber.core.AppRoute
 import com.shared.miniuber.core.ComposeRouter
 import com.shared.miniuber.feature.home.HomeScreen
-import com.shared.miniuber.feature.driversearch.DriverSearchScreen
+import com.shared.miniuber.feature.riderequest.RideRequestScreen
 import com.shared.miniuber.theme.AppColors
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.getKoin
@@ -60,8 +60,8 @@ fun App() {
                 HomeScreen()
             }
 
-            composable(AppRoute.SearchDriver.route) {
-                DriverSearchScreen()
+            composable(AppRoute.RideRequest.route) {
+                RideRequestScreen()
             }
         }
     }
