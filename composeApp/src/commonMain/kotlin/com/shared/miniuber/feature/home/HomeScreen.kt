@@ -71,7 +71,8 @@ fun HomeScreen(
         AimComponent(
             modifier = Modifier
                 .align(Alignment.Center)
-                .padding(bottom = 30.dp)
+                .padding(bottom = 30.dp),
+            visible = homeState.markerState.visible
         )
 
         ActionButtonsComponent(

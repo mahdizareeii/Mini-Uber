@@ -1,5 +1,6 @@
 package com.shared.miniuber.component
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -16,50 +17,56 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun AimComponent(
     modifier: Modifier = Modifier,
+    visible: Boolean = true,
     pinColor: Color = Color.Black,
     holeColor: Color = Color.White
 ) {
-    Canvas(
-        modifier = modifier.size(
-            width = 40.dp,
-            height = 60.dp
-        )
+    AnimatedVisibility(
+        modifier = modifier,
+        visible = visible
     ) {
-        val width = size.width
-        val height = size.height
-        val bulbDiameter = width
-        val bulbRadius = bulbDiameter / 2f
-
-        val path = Path().apply {
-            moveTo(0f, bulbRadius)
-
-            arcTo(
-                rect = Rect(0f, 0f, bulbDiameter, bulbDiameter),
-                startAngleDegrees = 180f,
-                sweepAngleDegrees = 180f,
-                forceMoveTo = false
+        Canvas(
+            modifier = Modifier.size(
+                width = 20.dp,
+                height = 30.dp
             )
+        ) {
+            val width = size.width
+            val height = size.height
+            val bulbDiameter = width
+            val bulbRadius = bulbDiameter / 2f
 
-            quadraticTo(
-                bulbDiameter, bulbRadius + (height - bulbDiameter) / 2,
-                bulbRadius, height
+            val path = Path().apply {
+                moveTo(0f, bulbRadius)
+
+                arcTo(
+                    rect = Rect(0f, 0f, bulbDiameter, bulbDiameter),
+                    startAngleDegrees = 180f,
+                    sweepAngleDegrees = 180f,
+                    forceMoveTo = false
+                )
+
+                quadraticTo(
+                    bulbDiameter, bulbRadius + (height - bulbDiameter) / 2,
+                    bulbRadius, height
+                )
+
+                quadraticTo(
+                    0f, bulbRadius + (height - bulbDiameter) / 2,
+                    0f, bulbRadius
+                )
+
+                close()
+            }
+
+            drawPath(path, pinColor)
+
+            drawCircle(
+                color = holeColor,
+                radius = bulbRadius / 2.5f,
+                center = Offset(bulbRadius, bulbRadius)
             )
-
-            quadraticTo(
-                0f, bulbRadius + (height - bulbDiameter) / 2,
-                0f, bulbRadius
-            )
-
-            close()
         }
-
-        drawPath(path, pinColor)
-
-        drawCircle(
-            color = holeColor,
-            radius = bulbRadius / 2.5f,
-            center = Offset(bulbRadius, bulbRadius)
-        )
     }
 }
 

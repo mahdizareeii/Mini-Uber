@@ -73,7 +73,8 @@ class HomePresenter(
                                 ),
                                 confirmButtonState = homeState.confirmButtonState.copy(
                                     text = Res.string.search_driver
-                                )
+                                ),
+                                markerState = homeState.markerState.copy(visible = false)
                             )
                         }
                     }
@@ -86,7 +87,8 @@ class HomePresenter(
                                 mapState = homeState.mapState.copy(endPoint = null),
                                 confirmButtonState = homeState.confirmButtonState.copy(
                                     text = Res.string.drop_off
-                                )
+                                ),
+                                markerState = homeState.markerState.copy(visible = true)
                             )
                         }
 
@@ -96,7 +98,8 @@ class HomePresenter(
                                 confirmButtonState = homeState.confirmButtonState.copy(
                                     text = Res.string.pickup_location
                                 ),
-                                cancelButtonState = null
+                                cancelButtonState = null,
+                                markerState = homeState.markerState.copy(visible = true)
                             )
                         }
                     }
