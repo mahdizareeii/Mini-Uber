@@ -4,8 +4,11 @@
     <string name="drop_off">DropOff</string>
     <string name="search_driver">Search</string>
     <string name="drivers_count">Drivers %1$s</string>
+    <string name="your_ride_requested">Your ride was requested</string>
+    <string name="finding_your_driver">Finding your driver</string>
     <string name="destination">Destination</string>
     <string name="pickup">Pickup</string>
     <string name="starting_location">Starting Location</string>
     <string name="error">Error</string>
+    <string name="cancel_ride">Cancel Ride</string>
 </resources>

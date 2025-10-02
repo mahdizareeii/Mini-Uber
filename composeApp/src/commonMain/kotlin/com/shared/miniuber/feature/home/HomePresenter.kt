@@ -99,7 +99,7 @@ class HomePresenter(
                         homeState = homeState
                     }
 
-                    is TripResponse.TripState.RideRequest -> {
+                    is TripResponse.TripState.NavigateToRideRequest -> {
                         homeState = homeState
                         router.navigate<AppScreens.RideRequestScreen>(
                             route = AppScreens.RideRequestScreen(),

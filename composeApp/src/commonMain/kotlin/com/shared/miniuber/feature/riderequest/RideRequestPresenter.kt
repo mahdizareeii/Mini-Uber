@@ -32,17 +32,13 @@ class RideRequestPresenter(
                 } else {
                     getLastRideRequest()
                 }
-                /*when (argument.requestMode) {
-                    AppScreens.RideRequestScreen.RequestMode.GetPreviousRequest -> {}
-                    AppScreens.RideRequestScreen.RequestMode.RegisterNewRequest ->
-                }*/
-
-
-                //check create a request with args
-                //if was null so the serve returns last request if has value server registers new trip
             }
-
             is RideRequestEvent.NavigateBack -> router.navigateUp()
+            is RideRequestEvent.CancelRideRequest -> router.navigate(
+                route = AppScreens.HomeScreen,
+                popUpTo = AppScreens.RideRequestScreen::class,
+                popUpToInclusive = true
+            )
         }
     }
 

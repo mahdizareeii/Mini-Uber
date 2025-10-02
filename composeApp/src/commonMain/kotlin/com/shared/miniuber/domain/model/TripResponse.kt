@@ -5,7 +5,7 @@ data class TripResponse(
 ) {
     sealed class TripState {
         data object NoTrip : TripState()
-        data object RideRequest : TripState()
+        data object NavigateToRideRequest : TripState()
         data class OnTrip(val ride: RideResponse) : TripState()
         data class EndTrip(val ride: RideResponse) : TripState()
     }
