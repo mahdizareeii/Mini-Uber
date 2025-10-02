@@ -1,4 +1,4 @@
-package com.shared.miniuber.feature.ride
+package com.shared.miniuber.feature.driversearch
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,12 +9,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun RideScreen() {
+fun DriverSearchScreen() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Ride screen")
+        Text("Search driver")
     }
 }

@@ -9,8 +9,8 @@ sealed class AppRoute(
         deepLink = "home"
     )
 
-    data object Ride : AppRoute(
-        route = "ride",
-        deepLink = "ride"
+    data object SearchDriver : AppRoute(
+        route = "search_driver",
+        deepLink = "search_driver"
     )
 }

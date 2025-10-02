@@ -2,9 +2,11 @@ package com.shared.miniuber.feature.home
 
 import androidx.lifecycle.viewModelScope
 import com.shared.miniuber.component.map.MapState.MarkerData
+import com.shared.miniuber.core.AppRoute
 import com.shared.miniuber.core.base.BaseContract
 import com.shared.miniuber.core.base.UiState
 import com.shared.miniuber.domain.model.LocationRequest
+import com.shared.miniuber.domain.model.TripResponse
 import com.shared.miniuber.feature.home.HomeState.ButtonState
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -129,6 +131,27 @@ class HomePresenter(
     }
 
     private fun init() {
-        //TODO call trip api
+        _state.update { UiState.Loading }
+        viewModelScope.launch {
+            interactor.getLastTrip().onSuccess {
+                when(it.state) {
+                    is TripResponse.TripState.EndTrip -> {
+                        homeState = homeState
+                    }
+                    is TripResponse.TripState.NoTrip -> {
+                        homeState = homeState
+                    }
+                    is TripResponse.TripState.OnTrip -> {
+                        homeState = homeState
+                    }
+                    is TripResponse.TripState.LookingForDriver -> {
+                        homeState = homeState
+                        router.navigate(route = AppRoute.SearchDriver.route)
+                    }
+                }
+            }.onFailure { error ->
+                _state.update { UiState.Error(error = error.message) }
+            }
+        }
     }
 }

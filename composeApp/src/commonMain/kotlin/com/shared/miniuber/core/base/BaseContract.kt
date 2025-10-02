@@ -32,6 +32,11 @@ interface BaseContract {
 
     interface Router {
         fun navigate(route: String)
+        fun navigate(
+            route: String,
+            popUpTo: String,
+            popUpToInclusive: Boolean
+        )
         fun navigateBack()
     }
 }

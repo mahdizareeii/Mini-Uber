@@ -4,6 +4,7 @@ import com.shared.miniuber.domain.model.DriverResponse
 import com.shared.miniuber.domain.model.LocationRequest
 import com.shared.miniuber.domain.model.RideRequest
 import com.shared.miniuber.domain.model.RideResponse
+import com.shared.miniuber.domain.model.TripResponse
 import com.shared.miniuber.domain.repository.DriverRepository
 import com.shared.miniuber.feature.home.HomeContract
 
@@ -20,5 +21,9 @@ class HomeInteractor(private val repository: DriverRepository) : HomeContract.In
         request: RideRequest
     ): Result<RideResponse> {
         return repository.requestRide(request)
+    }
+
+    override suspend fun getLastTrip(): Result<TripResponse> {
+        return repository.getLastTrip()
     }
 }

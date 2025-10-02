@@ -6,6 +6,7 @@ import com.shared.miniuber.domain.model.DriverResponse
 import com.shared.miniuber.domain.model.LocationRequest
 import com.shared.miniuber.domain.model.RideRequest
 import com.shared.miniuber.domain.model.RideResponse
+import com.shared.miniuber.domain.model.TripResponse
 
 interface HomeContract : BaseContract {
     abstract class Presenter : BaseContract.Presenter<HomeEvent, HomeState, HomeAction>()
@@ -17,5 +18,7 @@ interface HomeContract : BaseContract {
         suspend fun requestRide(
             request: RideRequest
         ): Result<RideResponse>
+
+        suspend fun getLastTrip(): Result<TripResponse>
     }
 }

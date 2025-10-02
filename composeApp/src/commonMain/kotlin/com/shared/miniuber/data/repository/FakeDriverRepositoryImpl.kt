@@ -5,6 +5,7 @@ import com.shared.miniuber.domain.model.LocationRequest
 import com.shared.miniuber.domain.model.LocationResponse
 import com.shared.miniuber.domain.model.RideRequest
 import com.shared.miniuber.domain.model.RideResponse
+import com.shared.miniuber.domain.model.TripResponse
 import com.shared.miniuber.domain.repository.DriverRepository
 import com.shared.miniuber.getPlatform
 import kotlinx.coroutines.delay
@@ -40,6 +41,15 @@ class FakeDriverRepositoryImpl : DriverRepository {
                 id = "ride-${getPlatform().generateUuid()}",
                 pickup = request.pickup,
                 dropOff = request.dropOff,
+            )
+        )
+    }
+
+    override suspend fun getLastTrip(): Result<TripResponse> {
+        delay(1000L)
+        return Result.success(
+            value = TripResponse(
+                state = TripResponse.TripState.NoTrip
             )
         )
     }

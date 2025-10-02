@@ -15,6 +15,18 @@ class ComposeRouter : BaseContract.Router {
         navController?.navigate(route)
     }
 
+    override fun navigate(
+        route: String,
+        popUpTo: String,
+        popUpToInclusive: Boolean
+    ) {
+        navController?.navigate(route) {
+            popUpTo(popUpTo) {
+                inclusive = popUpToInclusive
+            }
+        }
+    }
+
     override fun navigateBack() {
         navController?.navigateUp()
     }
