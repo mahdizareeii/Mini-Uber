@@ -8,9 +8,20 @@ sealed class AppScreens {
 
     @Serializable
     data class RideRequestScreen(
-        val pickupLat: Double? = null,
-        val pickupLng: Double? = null,
-        val dropOffLat: Double? = null,
-        val dropOffLng: Double? = null,
-    ) : AppScreens()
+        val pickupLat: Double,
+        val pickupLng: Double,
+        val dropOffLat: Double,
+        val dropOffLng: Double,
+    ) : AppScreens() {
+        var requestMode: RequestMode = RequestMode.RegisterNewRequest
+
+        constructor() : this(0.0, 0.0, 0.0, 0.0) {
+            requestMode = RequestMode.GetPreviousRequest
+        }
+
+        enum class RequestMode {
+            GetPreviousRequest,
+            RegisterNewRequest
+        }
+    }
 }

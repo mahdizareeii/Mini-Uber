@@ -2,8 +2,8 @@
 
 package com.shared.miniuber
 
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.ime
@@ -55,11 +55,10 @@ fun App() {
                 insets = WindowInsets.ime.add(WindowInsets.navigationBars)
             ),
             navController = navController,
-            enterTransition = { slideInHorizontally() },
-            exitTransition = { slideOutVertically() },
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
             startDestination = AppScreens.HomeScreen
         ) {
-
             composable<AppScreens.HomeScreen> { backStackEntry ->
                 composeRouter.setCurrentBackStackEntry(backStackEntry)
                 HomeScreen()

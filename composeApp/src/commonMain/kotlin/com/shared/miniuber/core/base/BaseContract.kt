@@ -32,7 +32,10 @@ interface BaseContract {
     interface Interactor
 
     interface Router {
-        fun <T> getScreenArg(route: KClass<*>): T?
+        fun <RESULT> setParentResult(key: String, value: RESULT)
+        fun <RESULT> getResultFlow(key: String, initialValue: RESULT?): StateFlow<RESULT?>?
+
+        fun <T> getScreenArg(screen: KClass<*>): T
 
         fun navigate(route: String)
         fun navigate(route: String, popUpTo: String, popUpToInclusive: Boolean)

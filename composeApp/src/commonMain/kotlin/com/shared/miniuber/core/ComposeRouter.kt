@@ -4,27 +4,39 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.toRoute
 import com.shared.miniuber.core.base.BaseContract
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.reflect.KClass
 
 class ComposeRouter : BaseContract.Router {
 
     private var navController: NavController? = null
-    var backStackEntry: NavBackStackEntry? = null
+    var lastBackStackEntry: NavBackStackEntry? =null
 
     fun initNavController(navController: NavController) {
         this.navController = navController
     }
 
     fun setCurrentBackStackEntry(backStackEntry: NavBackStackEntry) {
-        this.backStackEntry = backStackEntry
+        this.lastBackStackEntry = backStackEntry
     }
 
-    override fun <T> getScreenArg(route: KClass<*>): T? {
-        return backStackEntry?.toRoute(route)
+    override fun <RESULT> setParentResult(key: String, value: RESULT) {
+        navController?.previousBackStackEntry?.savedStateHandle?.set(key = key, value = value)
+    }
+
+    override fun <RESULT> getResultFlow(key: String, initialValue: RESULT?): StateFlow<RESULT?>? {
+        return navController?.currentBackStackEntry?.savedStateHandle?.getStateFlow(
+            key = key,
+            initialValue = initialValue
+        )
+    }
+
+    override fun <T> getScreenArg(screen: KClass<*>): T {
+        return lastBackStackEntry?.toRoute(route = screen) ?: error("No back stack entry available for screen $screen call setCurrentBackStackEntry in composable fun of your NavHost")
     }
 
     override fun navigate(route: String) {
-        navController?.navigate(route)
+        navController?.navigate(route = route)
     }
 
     override fun navigate(
@@ -33,14 +45,14 @@ class ComposeRouter : BaseContract.Router {
         popUpToInclusive: Boolean
     ) {
         navController?.navigate(route = route) {
-            popUpTo(popUpTo) {
+            popUpTo(route = popUpTo) {
                 inclusive = popUpToInclusive
             }
         }
     }
 
     override fun <T : Any> navigate(route: T) {
-        navController?.navigate(route)
+        navController?.navigate(route = route)
     }
 
     override fun <T : Any> navigate(
@@ -49,7 +61,7 @@ class ComposeRouter : BaseContract.Router {
         popUpToInclusive: Boolean
     ) {
         navController?.navigate(route = route) {
-            popUpTo(popUpTo) {
+            popUpTo(route = popUpTo) {
                 inclusive = popUpToInclusive
             }
         }

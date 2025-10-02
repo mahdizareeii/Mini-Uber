@@ -2,8 +2,6 @@ package com.shared.miniuber.domain.interactor
 
 import com.shared.miniuber.domain.model.DriverResponse
 import com.shared.miniuber.domain.model.LocationRequest
-import com.shared.miniuber.domain.model.RideRequest
-import com.shared.miniuber.domain.model.RideResponse
 import com.shared.miniuber.domain.model.TripResponse
 import com.shared.miniuber.domain.repository.DriverRepository
 import com.shared.miniuber.feature.home.HomeContract
