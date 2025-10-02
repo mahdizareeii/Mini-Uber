@@ -32,22 +32,25 @@ VIPER Architecture (feature separation & testability)
 Coroutines & Flows (async data streams)
 Clean Architecture (data/domain/feature separation)
 
-📂 Project Structure
+## 📂 Project Structure
+```
 com.android.miniuber
  ┣ core
- ┃ ┣ base
- ┃ ┗ platform       # AppRoute, Router
+ ┃ ┣ di              # Dependency injection (for data core)
+ ┃ ┣ base            # Base contract, abstractions
+ ┃ ┗ platform        # AppRoute, ComposeRouter
  ┣ data
- ┃ ┣ local
- ┃ ┣ network
- ┃ ┣ repository     # FakeDriverRepositoryImpl
- ┃ ┗ socket
+ ┃ ┣ di              # Dependency injection (for data layer)
+ ┃ ┣ local           # Local data sources (DB, cache, etc.)
+ ┃ ┣ network         # Network data sources (API, retrofit, ktor)
+ ┃ ┣ repository      # Data layer implementations (e.g., FakeDriverRepositoryImpl)
+ ┃ ┗ socket          # Socket or realtime connections
  ┣ domain
- ┃ ┣ interactor     # Use cases
- ┃ ┣ model          # Entities
- ┃ ┗ repository     # Interfaces
+ ┃ ┣ di              # Dependency injection (domain layer)
+ ┃ ┣ interactor      # Use cases / business logic (e.g., HomeInteractor)
+ ┃ ┣ model           # Entities / models (Driver, Ride, Location)
+ ┃ ┗ repository      # Repository interfaces (abstraction over data layer)
  ┣ feature
- ┃ ┣ home           # HomeContract, HomePresenter, HomeScreen
- ┃ ┗ ride           # Ride screens (WIP)
- ┣ sharedscreen     # App, Compose entry points
- ┗ util             # UiState, common utils
+ ┃ ┣ home            # HomeContract, HomeEvent, HomePresenter, HomeScreen, HomeState
+ ┗ ┗ ride            # Ride-related contracts, presenters, screens (WIP)
+```
