@@ -15,7 +15,7 @@ This project is not a full Uber clone, but a simplified demo app to showcase arc
 📸 Screenshots
 | Home Screen                     | Ride Screen                     |
 | ------------------------------- | ------------------------------- |
-| ![Home](./Screenshot_1.png)) | ![Ride](./Screenshot_2.png) |
+| ![Home](./Screenshot_1.png) | ![Ride](./Screenshot_2.png) |
 
 
 ✨ Features (so far)
