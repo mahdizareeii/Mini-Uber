@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlin.reflect.KClass
 
 interface BaseContract {
     interface View<UI_STATE, UI_ACTION> {
@@ -31,12 +32,14 @@ interface BaseContract {
     interface Interactor
 
     interface Router {
+        fun <T> getScreenArg(route: KClass<*>): T?
+
         fun navigate(route: String)
-        fun navigate(
-            route: String,
-            popUpTo: String,
-            popUpToInclusive: Boolean
-        )
-        fun navigateBack()
+        fun navigate(route: String, popUpTo: String, popUpToInclusive: Boolean)
+
+        fun <T : Any> navigate(route: T)
+        fun <T : Any> navigate(route: T, popUpTo: KClass<*>, popUpToInclusive: Boolean)
+
+        fun navigateUp()
     }
 }

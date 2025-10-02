@@ -46,8 +46,14 @@ class FakeDriverRepositoryImpl(
             Result.success(
                 value = RideResponse(
                     id = "ride-${getPlatform().generateUuid()}",
-                    pickup = request.pickup,
-                    dropOff = request.dropOff,
+                    pickup = LocationResponse(
+                        lat = request.pickup.lat,
+                        lng = request.pickup.lng
+                    ),
+                    dropOff = LocationResponse(
+                        lat = request.dropOff.lat,
+                        lng = request.dropOff.lng
+                    ),
                 )
             )
         }

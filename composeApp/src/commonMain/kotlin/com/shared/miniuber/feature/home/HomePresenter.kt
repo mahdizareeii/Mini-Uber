@@ -2,7 +2,7 @@ package com.shared.miniuber.feature.home
 
 import androidx.lifecycle.viewModelScope
 import com.shared.miniuber.component.map.MapState.MarkerData
-import com.shared.miniuber.core.AppRoute
+import com.shared.miniuber.core.AppScreens
 import com.shared.miniuber.core.base.BaseContract
 import com.shared.miniuber.core.base.UiState
 import com.shared.miniuber.domain.model.LocationRequest
@@ -36,7 +36,7 @@ class HomePresenter(
         viewModelScope.launch {
             when (event) {
                 is HomeEvent.Init -> init()
-                is HomeEvent.NavigateBack -> router.navigateBack()
+                is HomeEvent.NavigateBack -> router.navigateUp()
                 is HomeEvent.OnMapStateUpdated -> {
                     homeState.mapState.cameraPosition = event.latLng
                     getNearbyDrivers()
@@ -80,11 +80,18 @@ class HomePresenter(
                             )
                         }
 
-                        else -> router.navigate(
-                            route = AppRoute.RideRequest.route,
-                            popUpTo = AppRoute.Home.route,
-                            popUpToInclusive = true
-                        )
+                        else -> {
+                            router.navigate(
+                                route = AppScreens.RideRequestScreen(
+                                    pickupLat = homeState.mapState.startPoint?.latLng?.latitude,
+                                    pickupLng = homeState.mapState.startPoint?.latLng?.longitude,
+                                    dropOffLat = homeState.mapState.endPoint?.latLng?.latitude,
+                                    dropOffLng = homeState.mapState.endPoint?.latLng?.longitude
+                                ),
+                                popUpTo = AppScreens.HomeScreen::class,
+                                popUpToInclusive = true
+                            )
+                        }
                     }
                 }
 
@@ -155,9 +162,9 @@ class HomePresenter(
 
                     is TripResponse.TripState.RideRequest -> {
                         homeState = homeState
-                        router.navigate(
-                            route = AppRoute.RideRequest.route,
-                            popUpTo = AppRoute.Home.route,
+                        router.navigate<AppScreens.RideRequestScreen>(
+                            route = AppScreens.RideRequestScreen(),
+                            popUpTo = AppScreens.HomeScreen::class,
                             popUpToInclusive = true
                         )
                     }

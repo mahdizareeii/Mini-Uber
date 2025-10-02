@@ -2,6 +2,8 @@
 
 package com.shared.miniuber
 
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.ime
@@ -15,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.shared.miniuber.core.AppRoute
+import com.shared.miniuber.core.AppScreens
 import com.shared.miniuber.core.ComposeRouter
 import com.shared.miniuber.feature.home.HomeScreen
 import com.shared.miniuber.feature.riderequest.RideRequestScreen
@@ -46,21 +48,25 @@ fun App() {
         colorScheme = colors
     ) {
         val navController = rememberNavController()
-        //init App router
-        getKoin().get<ComposeRouter>().initNavController(navController)
-
+        val composeRouter = getKoin().get<ComposeRouter>()
+        composeRouter.initNavController(navController)
         NavHost(
             modifier = Modifier.windowInsetsPadding(
                 insets = WindowInsets.ime.add(WindowInsets.navigationBars)
             ),
             navController = navController,
-            startDestination = AppRoute.Home.route
+            enterTransition = { slideInHorizontally() },
+            exitTransition = { slideOutVertically() },
+            startDestination = AppScreens.HomeScreen
         ) {
-            composable(route = AppRoute.Home.route) {
+
+            composable<AppScreens.HomeScreen> { backStackEntry ->
+                composeRouter.setCurrentBackStackEntry(backStackEntry)
                 HomeScreen()
             }
 
-            composable(AppRoute.RideRequest.route) {
+            composable<AppScreens.RideRequestScreen> { backStackEntry ->
+                composeRouter.setCurrentBackStackEntry(backStackEntry)
                 RideRequestScreen()
             }
         }
