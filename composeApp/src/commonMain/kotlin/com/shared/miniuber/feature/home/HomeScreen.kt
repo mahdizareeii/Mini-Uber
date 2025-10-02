@@ -1,16 +1,12 @@
 // commonMain
 package com.shared.miniuber.feature.home
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,8 +17,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.shared.miniuber.component.ActionButtonsComponent
 import com.shared.miniuber.component.AimComponent
-import com.shared.miniuber.component.LoadingComponent
+import com.shared.miniuber.component.IndicatorComponent
+import com.shared.miniuber.component.ErrorMessageComponent
 import com.shared.miniuber.component.map.GoogleMapComponent
 import com.shared.miniuber.core.base.UiState
 import com.shared.miniuber.core.collectAsEffect
@@ -38,7 +36,7 @@ fun HomeScreen(
     var homeState by remember { mutableStateOf(HomeState()) }
 
     presenter.action.collectAsEffect {
-
+        // Handle actions here
     }
 
     when (val state = uiState) {
@@ -50,7 +48,7 @@ fun HomeScreen(
             homeState = state.data
         }
 
-        is UiState.Error -> Text("Error: ${state.message}")
+        is UiState.Error -> ErrorMessageComponent(message = state.message)
         else -> {}
     }
 
@@ -63,45 +61,30 @@ fun HomeScreen(
             }
         )
 
-        Text(
+        IndicatorComponent(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 50.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(horizontal = 10.dp, vertical = 5.dp),
-            text = homeState.driversCountState.text
+                .padding(top = 48.dp),
+            count = homeState.driversCountState.text
         )
 
-        AimComponent(Modifier.align(Alignment.Center))
+        AimComponent(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(bottom = 30.dp)
+        )
 
-
-        Row(
-            Modifier
+        ActionButtonsComponent(
+            modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(5.dp)
-        ) {
-            Button(
-                onClick = { presenter.onEvent(HomeEvent.OnConfirmButtonClicked) },
-                content = {
-                    if (uiState is UiState.Loading)
-                        LoadingComponent()
-                    else
-                        Text(text = stringResource(resource = homeState.confirmButtonState.text))
-                },
-            )
-
-            homeState.cancelButtonState?.also { cancelState ->
-                Button(
-                    onClick = { presenter.onEvent(HomeEvent.OnCancelButtonClicked) },
-                    content = {
-                        Text(text = stringResource(resource = cancelState.text))
-                    },
-                )
-            }
-        }
+                .padding(bottom = 32.dp)
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
+            isLoading = uiState is UiState.Loading,
+            confirmText = stringResource(resource = homeState.confirmButtonState.text),
+            cancelText = homeState.cancelButtonState?.let { stringResource(resource = it.text) },
+            onConfirmClick = { presenter.onEvent(HomeEvent.OnConfirmButtonClicked) },
+            onCancelClick = { presenter.onEvent(HomeEvent.OnCancelButtonClicked) }
+        )
     }
 }

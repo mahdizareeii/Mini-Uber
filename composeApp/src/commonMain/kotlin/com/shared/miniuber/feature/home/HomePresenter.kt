@@ -9,10 +9,10 @@ import com.shared.miniuber.feature.home.HomeState.ButtonState
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import miniuber.composeapp.generated.resources.Res
-import miniuber.composeapp.generated.resources.close_symbol
 import miniuber.composeapp.generated.resources.destination
 import miniuber.composeapp.generated.resources.drivers_count
 import miniuber.composeapp.generated.resources.drop_off
+import miniuber.composeapp.generated.resources.empty
 import miniuber.composeapp.generated.resources.pickup
 import miniuber.composeapp.generated.resources.pickup_location
 import miniuber.composeapp.generated.resources.search_driver
@@ -58,7 +58,7 @@ class HomePresenter(
                                 confirmButtonState = homeState.confirmButtonState.copy(
                                     text = Res.string.drop_off
                                 ),
-                                cancelButtonState = ButtonState(text = Res.string.close_symbol)
+                                cancelButtonState = ButtonState(text = Res.string.empty)
                             )
                         }
 
