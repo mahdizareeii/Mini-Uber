@@ -1,35 +1,53 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+🚖 Mini Uber (Kotlin Multiplatform + Compose Multiplatform + VIPER)
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+A Mini Uber clone built with Kotlin Multiplatform (KMP) and Compose Multiplatform (CMP) to demonstrate:
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+🧩 VIPER Architecture in a cross-platform setup
 
-### Build and Run Android Application
+🎨 Declarative UI with Compose Multiplatform
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+📦 Clean Architecture separation (data / domain / feature / core)
 
-### Build and Run iOS Application
+🧪 Testable, scalable design for mobile apps
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+This project is not a full Uber clone, but a simplified demo app to showcase architecture, structure, and best practices in KMP development.
 
----
+📸 Screenshots
+| Home Screen                     | Ride Screen                     |
+| ------------------------------- | ------------------------------- |
+| ![Home](./screenshots/home.png) | ![Ride](./screenshots/ride.png) |
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+
+✨ Features (so far)
+📍 Show nearby drivers (fake data repository for now)
+🚕 Request a ride with pickup & destination
+⏳ Show ride status (waiting → on the way → completed)
+🎯 Compose Router navigation between screens
+🧩 VIPER layers: View, Interactor, Presenter, Entity, Router
+
+🛠️ Tech Stack
+Kotlin Multiplatform (shared business logic)
+Compose Multiplatform (shared UI across Android, Desktop, iOS)
+VIPER Architecture (feature separation & testability)
+Coroutines & Flows (async data streams)
+Clean Architecture (data/domain/feature separation)
+
+📂 Project Structure
+com.android.miniuber
+ ┣ core
+ ┃ ┣ base
+ ┃ ┗ platform       # AppRoute, Router
+ ┣ data
+ ┃ ┣ local
+ ┃ ┣ network
+ ┃ ┣ repository     # FakeDriverRepositoryImpl
+ ┃ ┗ socket
+ ┣ domain
+ ┃ ┣ interactor     # Use cases
+ ┃ ┣ model          # Entities
+ ┃ ┗ repository     # Interfaces
+ ┣ feature
+ ┃ ┣ home           # HomeContract, HomePresenter, HomeScreen
+ ┃ ┗ ride           # Ride screens (WIP)
+ ┣ sharedscreen     # App, Compose entry points
+ ┗ util             # UiState, common utils
