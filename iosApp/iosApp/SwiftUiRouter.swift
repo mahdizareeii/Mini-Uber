@@ -5,18 +5,41 @@
 import Foundation
 import ComposeApp
 
-//for native screen graph scenarios
-
+//This class only use for native screen graph scenarios
 class SwiftUiRouter: BaseContractRouter {
-    @Published var path: [AppRoute] = []
+    @Published var path: [AppScreens] = []
     
-    func navigate(route: String) {
+    func getResultFlow(key: String, initialValue: Any?) -> (any Kotlinx_coroutines_coreStateFlow)? {
+        return nil
+    }
+    
+    func getScreenArg(screen: any KotlinKClass) -> Any? {
+        return nil
+    }
+    
+    func navigate(route: Any) {
         //path.append(appRoute)
     }
     
-    func navigateBack() {
+    func navigate(route_ route: String) {
+        
+    }
+    
+    func navigate(route: Any, popUpTo: any KotlinKClass, popUpToInclusive: Bool) {
+        
+    }
+    
+    func navigate(route: String, popUpTo: String, popUpToInclusive_ popUpToInclusive: Bool) {
+        
+    }
+    
+    func navigateUp() {
         if !path.isEmpty {
             path.removeLast()
         }
+    }
+    
+    func setParentResult(key: String, value: Any?) {
+        
     }
 }

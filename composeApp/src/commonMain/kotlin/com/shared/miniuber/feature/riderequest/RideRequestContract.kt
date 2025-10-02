@@ -9,9 +9,8 @@ interface RideRequestContract : BaseContract {
     abstract class Presenter : BaseContract.Presenter<RideRequestEvent, RideRequestState, RideRequestAction>()
 
     interface Interactor : BaseContract.Interactor {
-        suspend fun rideRequest(
-            request: RideRequest
-        ): Result<RideResponse>
+        suspend fun rideRequest(request: RideRequest): Result<RideResponse>
+        suspend fun getLastRideRequest(): Result<RideResponse>
     }
 
 }

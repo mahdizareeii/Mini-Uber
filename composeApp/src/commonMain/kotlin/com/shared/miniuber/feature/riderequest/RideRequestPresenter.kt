@@ -27,13 +27,15 @@ class RideRequestPresenter(
     override fun onEvent(event: RideRequestEvent) {
         when (event) {
             is RideRequestEvent.Init -> {
-                rideRequestState = rideRequestState.copy(
-                    nearDriverCount = argument.pickupLat.toString(),
-                )
-                when (argument.requestMode) {
-                    AppScreens.RideRequestScreen.RequestMode.GetPreviousRequest -> TODO()
-                    AppScreens.RideRequestScreen.RequestMode.RegisterNewRequest -> registerRideRequest()
+                if (argument.isValidLocation()) {
+                    registerRideRequest()
+                } else {
+                    getLastRideRequest()
                 }
+                /*when (argument.requestMode) {
+                    AppScreens.RideRequestScreen.RequestMode.GetPreviousRequest -> {}
+                    AppScreens.RideRequestScreen.RequestMode.RegisterNewRequest ->
+                }*/
 
 
                 //check create a request with args
@@ -59,11 +61,20 @@ class RideRequestPresenter(
                     ),
                 )
             ).onSuccess {
-                rideRequestState = rideRequestState.copy(
+                rideRequestState = rideRequestState.copy(requestedAt = it.requestedAt)
+            }.onFailure { error ->
+                _state.update { UiState.Error(error = error.message) }
+            }
+        }
+    }
 
-                )
-            }.onFailure {
-
+    private fun getLastRideRequest() {
+        _state.update { UiState.Loading }
+        viewModelScope.launch {
+            interactor.getLastRideRequest().onSuccess {
+                rideRequestState = rideRequestState.copy(requestedAt = it.requestedAt)
+            }.onFailure { error ->
+                _state.update { UiState.Error(error = error.message) }
             }
         }
     }

@@ -59,6 +59,25 @@ class FakeDriverRepositoryImpl(
         }
     }
 
+    override suspend fun getLastRideRequest(): Result<RideResponse> {
+        delay(1000)
+        return withContext(dispatcher) {
+            Result.success(
+                value = RideResponse(
+                    id = "ride-${getPlatform().generateUuid()}",
+                    pickup = LocationResponse(
+                        lat = Double.NaN,
+                        lng = Double.NaN
+                    ),
+                    dropOff = LocationResponse(
+                        lat = Double.NaN,
+                        lng = Double.NaN
+                    ),
+                )
+            )
+        }
+    }
+
     override suspend fun getLastTrip(): Result<TripResponse> {
         delay(1000L)
         return withContext(dispatcher) {

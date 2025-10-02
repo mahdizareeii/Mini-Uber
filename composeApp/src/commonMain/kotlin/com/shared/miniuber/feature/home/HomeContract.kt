@@ -10,10 +10,7 @@ import com.shared.miniuber.domain.model.TripResponse
 interface HomeContract : BaseContract {
     abstract class Presenter : BaseContract.Presenter<HomeEvent, HomeState, HomeAction>()
     interface Interactor : BaseContract.Interactor {
-        suspend fun getNearbyDrivers(
-            location: LocationRequest
-        ): Result<List<DriverResponse>>
-
+        suspend fun getNearbyDrivers(location: LocationRequest): Result<List<DriverResponse>>
         suspend fun getLastTrip(): Result<TripResponse>
     }
 }

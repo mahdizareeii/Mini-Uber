@@ -48,6 +48,6 @@ fun RideRequestScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(rideRequestState.nearDriverCount)
+        Text(rideRequestState.requestedAt)
     }
 }

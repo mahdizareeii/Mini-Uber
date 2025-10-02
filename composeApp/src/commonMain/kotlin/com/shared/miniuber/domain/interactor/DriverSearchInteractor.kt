@@ -7,8 +7,12 @@ import com.shared.miniuber.feature.riderequest.RideRequestContract
 
 class DriverSearchInteractor(
     private val repository: DriverRepository
-): RideRequestContract.Interactor {
+) : RideRequestContract.Interactor {
     override suspend fun rideRequest(request: RideRequest): Result<RideResponse> {
         return repository.requestRide(request)
+    }
+
+    override suspend fun getLastRideRequest(): Result<RideResponse> {
+        return repository.getLastRideRequest()
     }
 }

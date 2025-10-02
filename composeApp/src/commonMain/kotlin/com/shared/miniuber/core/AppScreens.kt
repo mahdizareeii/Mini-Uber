@@ -13,15 +13,8 @@ sealed class AppScreens {
         val dropOffLat: Double,
         val dropOffLng: Double,
     ) : AppScreens() {
-        var requestMode: RequestMode = RequestMode.RegisterNewRequest
+        constructor() : this(Double.NaN, Double.NaN, Double.NaN, Double.NaN)
 
-        constructor() : this(0.0, 0.0, 0.0, 0.0) {
-            requestMode = RequestMode.GetPreviousRequest
-        }
-
-        enum class RequestMode {
-            GetPreviousRequest,
-            RegisterNewRequest
-        }
+        fun isValidLocation() = (pickupLat + pickupLng + dropOffLat + dropOffLng) > Double.NaN
     }
 }
