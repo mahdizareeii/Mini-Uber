@@ -1,3 +1,5 @@
+Medium article ([https://medium.com](https://medium.com/@mahdizareeii/building-a-mini-uber-with-kotlin-multiplatform-viper-architecture-compose-multiplatform-1d3dd0a08399)).
+
 🚖 Mini Uber (Kotlin Multiplatform + Compose Multiplatform + VIPER)
 
 A Mini Uber clone built with Kotlin Multiplatform (KMP) and Compose Multiplatform (CMP) to demonstrate:
