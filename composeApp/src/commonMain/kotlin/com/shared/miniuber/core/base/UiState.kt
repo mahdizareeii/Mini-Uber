@@ -1,10 +1,8 @@
 package com.shared.miniuber.core.base
 
-sealed class UiState<out T> {
-    object Init : UiState<Nothing>()
-    object Loading : UiState<Nothing>()
-    data class Success<T>(val data: T) : UiState<T>()
-    data class Error(private val error: String?) : UiState<Nothing>() {
-        val message get() = error ?: "Unknown Error"
-    }
-}
+/** Retains screen content while loading or displaying a recoverable error. */
+data class UiState<T>(
+    val data: T,
+    val isLoading: Boolean = false,
+    val error: String? = null,
+)

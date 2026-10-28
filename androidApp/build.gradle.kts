@@ -1,61 +1,54 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.kotlinAndroid)
 }
 
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
+}
+val mapsApiKey = providers.environmentVariable("MAPS_API_KEY_ANDROID")
+    .orElse(providers.gradleProperty("MAPS_API_KEY_ANDROID"))
+    .orElse(localProperties.getProperty("MAPS_API_KEY_ANDROID", ""))
+
 android {
-    namespace = libs.plugins.androidApplicationId.get().toString()
+    namespace = libs.versions.android.namespace.get()
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = libs.plugins.androidApplicationId.get().toString()
+        applicationId = libs.versions.android.applicationId.get()
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        manifestPlaceholders["mapsApiKey"] = mapsApiKey.get()
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+    buildFeatures {
+        compose = true
     }
+    packaging.resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
     buildTypes {
         release {
             isMinifyEnabled = false
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-
-
-    dependencies {
-        implementation(projects.composeApp)
-
-        implementation(libs.androidx.core.ktx)
-
-        implementation(libs.map.compose)
-
-        //compose
-        debugImplementation(compose.uiTooling)
-        implementation(compose.preview)
-        implementation(compose.runtime)
-        implementation(compose.foundation)
-        implementation(compose.material3)
-        implementation(compose.ui)
-        implementation(compose.components.resources)
-        implementation(compose.components.uiToolingPreview)
-        implementation(libs.androidx.activity.compose)
-        implementation(libs.bundles.composeBundle)
-
-        //koin
-        implementation(libs.bundles.koinBundle)
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
+dependencies {
+    implementation(projects.composeApp)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.koin.android)
+    implementation(libs.compose.runtime)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
+}

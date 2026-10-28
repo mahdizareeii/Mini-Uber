@@ -2,6 +2,7 @@ package com.shared.miniuber.core
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberUpdatedState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -14,7 +15,8 @@ fun <T> Flow<T>.collectAsEffect(
     context: CoroutineContext = EmptyCoroutineContext,
     block: (T) -> Unit
 ) {
-    LaunchedEffect(key1 = Unit) {
-        onEach(block).flowOn(context).launchIn(this)
+    val currentBlock = rememberUpdatedState(block)
+    LaunchedEffect(this, context) {
+        onEach { currentBlock.value(it) }.flowOn(context).launchIn(this)
     }
 }

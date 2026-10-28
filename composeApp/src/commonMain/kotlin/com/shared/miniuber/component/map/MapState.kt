@@ -1,7 +1,7 @@
 package com.shared.miniuber.component.map
 
 data class MapState(
-    var cameraPosition: LatLng = LatLng(35.6997, 51.3380),
+    val cameraPosition: LatLng = LatLng(35.6997, 51.3380),
     val cameraZoom: Float = 15f,
     val startPoint: MarkerData? = null,
     val endPoint: MarkerData? = null

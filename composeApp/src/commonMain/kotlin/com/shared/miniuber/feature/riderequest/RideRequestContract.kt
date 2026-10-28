@@ -6,7 +6,7 @@ import com.shared.miniuber.domain.model.RideResponse
 
 interface RideRequestContract : BaseContract {
 
-    abstract class Presenter : BaseContract.Presenter<RideRequestEvent, RideRequestState, RideRequestAction>()
+    abstract class Presenter : BaseContract.Presenter<RideRequestEvent, RideRequestState, RideRequestAction>(RideRequestState())
 
     interface Interactor : BaseContract.Interactor {
         suspend fun rideRequest(request: RideRequest): Result<RideResponse>

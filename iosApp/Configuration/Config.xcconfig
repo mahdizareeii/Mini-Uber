@@ -5,3 +5,11 @@ PRODUCT_BUNDLE_IDENTIFIER=com.shared.miniuber.MiniUber$(TEAM_ID)
 
 CURRENT_PROJECT_VERSION=1
 MARKETING_VERSION=1.0
+
+// The shared framework is built by the Xcode Gradle build phase.
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$(SRCROOT)/../composeApp/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)"
+OTHER_LDFLAGS = $(inherited) -framework ComposeApp
+
+// Empty configuration still compiles and displays a setup message at runtime.
+MAPS_API_KEY_IOS =
+#include? "Secrets.xcconfig"

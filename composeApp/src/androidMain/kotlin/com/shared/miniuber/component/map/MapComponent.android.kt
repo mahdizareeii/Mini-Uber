@@ -6,10 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -30,9 +31,11 @@ actual fun GoogleMapComponent(
     state: MapState,
     onCameraChanged: (latLng: MapState.LatLng) -> Unit,
 ) {
+    var mapLoaded by remember { mutableStateOf(false) }
+    val currentOnCameraChanged by rememberUpdatedState(onCameraChanged)
     val startMarkerState = rememberUpdatedMarkerState()
     val endMarkerState = rememberUpdatedMarkerState()
-    val cameraPositionState = rememberCameraPositionState() {
+    val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(
             LatLng(
                 state.cameraPosition.latitude,
@@ -42,12 +45,11 @@ actual fun GoogleMapComponent(
         )
     }
 
-    LaunchedEffect(cameraPositionState.position) {
-        onCameraChanged(
-            MapState.LatLng(
-                latitude = cameraPositionState.position.target.latitude,
-                longitude = cameraPositionState.position.target.longitude
-            )
+    LaunchedEffect(cameraPositionState.position, mapLoaded) {
+        if (!mapLoaded) return@LaunchedEffect
+        val target = cameraPositionState.position.target
+        currentOnCameraChanged(
+            MapState.LatLng(latitude = target.latitude, longitude = target.longitude)
         )
     }
 
@@ -63,7 +65,8 @@ actual fun GoogleMapComponent(
     startMarkerState.position = startPoint
     endMarkerState.position = endPoint
 
-    LaunchedEffect(startPoint, endPoint) {
+    LaunchedEffect(startPoint, endPoint, mapLoaded) {
+        if (!mapLoaded) return@LaunchedEffect
         if (state.startPoint != null && state.endPoint != null) {
             val bounds = LatLngBounds.builder()
                 .include(startPoint)
@@ -86,7 +89,8 @@ actual fun GoogleMapComponent(
 
     GoogleMap(
         modifier = modifier.fillMaxSize(),
-        cameraPositionState = cameraPositionState
+        cameraPositionState = cameraPositionState,
+        onMapLoaded = { mapLoaded = true }
     ) {
         if (state.startPoint != null && state.endPoint != null) {
             AnimatedCurveLine(
@@ -160,7 +164,7 @@ fun AnimatedCurveLine(start: LatLng, end: LatLng) {
             curveHeight = 0.2
         )
     }
-    var visiblePointsCount by remember { mutableIntStateOf(0) }
+    var visiblePointsCount by remember(start, end) { mutableIntStateOf(0) }
 
     LaunchedEffect(allPoints) {
         for (i in 1..allPoints.size) {

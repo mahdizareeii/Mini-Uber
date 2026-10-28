@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.shared.miniuber.component.map.MapState.MarkerData
 import com.shared.miniuber.core.AppScreens
 import com.shared.miniuber.core.base.BaseContract
-import com.shared.miniuber.core.base.UiState
 import com.shared.miniuber.domain.model.LocationRequest
 import com.shared.miniuber.domain.model.TripResponse
 import com.shared.miniuber.feature.home.HomeState.ButtonState
@@ -12,24 +11,25 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import miniuber.composeapp.generated.resources.Res
 import miniuber.composeapp.generated.resources.destination
-import miniuber.composeapp.generated.resources.drivers_count
 import miniuber.composeapp.generated.resources.drop_off
 import miniuber.composeapp.generated.resources.empty
 import miniuber.composeapp.generated.resources.pickup
 import miniuber.composeapp.generated.resources.pickup_location
 import miniuber.composeapp.generated.resources.search_driver
 import miniuber.composeapp.generated.resources.starting_location
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
 
 class HomePresenter(
     private val interactor: HomeContract.Interactor,
-    private val router: BaseContract.Router
+    private val router: BaseContract.Router,
+    private val resolveString: suspend (StringResource) -> String = { getString(it) }
 ) : HomeContract.Presenter() {
 
     private var homeState = HomeState()
         set(value) {
             field = value
-            _state.update { UiState.Success(value) }
+            _state.update { it.copy(data = value, isLoading = false, error = null) }
         }
 
     override fun onEvent(event: HomeEvent) {
@@ -37,7 +37,9 @@ class HomePresenter(
             is HomeEvent.Init -> init()
             is HomeEvent.NavigateBack -> router.navigateUp()
             is HomeEvent.OnMapStateUpdated -> {
-                homeState.mapState.cameraPosition = event.latLng
+                homeState = homeState.copy(
+                    mapState = homeState.mapState.copy(cameraPosition = event.latLng)
+                )
                 getNearbyDrivers()
             }
 
@@ -63,7 +65,7 @@ class HomePresenter(
     }
 
     private fun getNearbyDrivers() {
-        _state.update { UiState.Loading }
+        _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             interactor.getNearbyDrivers(
                 LocationRequest(
@@ -73,17 +75,17 @@ class HomePresenter(
             ).onSuccess { result ->
                 homeState = homeState.copy(
                     driversCountState = homeState.driversCountState.copy(
-                        text = getString(Res.string.drivers_count, result.size)
+                        count = result.size
                     )
                 )
             }.onFailure { error ->
-                _state.update { UiState.Error(error = error.message) }
+                _state.update { it.copy(isLoading = false, error = error.message) }
             }
         }
     }
 
     private fun init() {
-        _state.update { UiState.Loading }
+        _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             interactor.getLastTrip().onSuccess {
                 when (val state = it.state) {
@@ -109,7 +111,7 @@ class HomePresenter(
                     }
                 }
             }.onFailure { error ->
-                _state.update { UiState.Error(error = error.message) }
+                _state.update { it.copy(isLoading = false, error = error.message) }
             }
         }
     }
@@ -120,8 +122,8 @@ class HomePresenter(
                 mapState = homeState.mapState.copy(
                     startPoint = MarkerData(
                         latLng = homeState.mapState.cameraPosition,
-                        title = getString(Res.string.pickup),
-                        snipped = getString(Res.string.starting_location)
+                        title = resolveString(Res.string.pickup),
+                        snipped = resolveString(Res.string.starting_location)
                     )
                 ),
                 confirmButtonState = homeState.confirmButtonState.copy(
@@ -138,8 +140,8 @@ class HomePresenter(
                 mapState = homeState.mapState.copy(
                     endPoint = MarkerData(
                         latLng = homeState.mapState.cameraPosition,
-                        title = getString(Res.string.drop_off),
-                        snipped = getString(Res.string.destination)
+                        title = resolveString(Res.string.drop_off),
+                        snipped = resolveString(Res.string.destination)
                     )
                 ),
                 confirmButtonState = homeState.confirmButtonState.copy(

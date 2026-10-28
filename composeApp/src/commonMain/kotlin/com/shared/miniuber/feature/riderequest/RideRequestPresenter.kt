@@ -3,7 +3,6 @@ package com.shared.miniuber.feature.riderequest
 import androidx.lifecycle.viewModelScope
 import com.shared.miniuber.core.AppScreens
 import com.shared.miniuber.core.base.BaseContract
-import com.shared.miniuber.core.base.UiState
 import com.shared.miniuber.domain.model.LocationRequest
 import com.shared.miniuber.domain.model.RideRequest
 import kotlinx.coroutines.flow.update
@@ -18,12 +17,6 @@ class RideRequestPresenter(
         screen = AppScreens.RideRequestScreen::class
     )
 
-    private var rideRequestState = RideRequestState()
-        set(value) {
-            field = value
-            _state.update { UiState.Success(value) }
-        }
-
     override fun onEvent(event: RideRequestEvent) {
         when (event) {
             is RideRequestEvent.Init -> {
@@ -33,7 +26,14 @@ class RideRequestPresenter(
                     getLastRideRequest()
                 }
             }
+
             is RideRequestEvent.NavigateBack -> router.navigateUp()
+            is RideRequestEvent.NavigateHome -> router.navigate(
+                route = AppScreens.LandingScreen,
+                popUpTo = AppScreens.LandingScreen::class,
+                popUpToInclusive = true
+            )
+
             is RideRequestEvent.CancelRideRequest -> router.navigate(
                 route = AppScreens.HomeScreen,
                 popUpTo = AppScreens.RideRequestScreen::class,
@@ -43,7 +43,7 @@ class RideRequestPresenter(
     }
 
     private fun registerRideRequest() {
-        _state.update { UiState.Loading }
+        _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             interactor.rideRequest(
                 request = RideRequest(
@@ -56,21 +56,29 @@ class RideRequestPresenter(
                         lng = argument.dropOffLng
                     ),
                 )
-            ).onSuccess {
-                rideRequestState = rideRequestState.copy(requestedAt = it.requestedAt)
+            ).onSuccess { rideResponse ->
+                _state.update {
+                    it.copy(
+                        data = it.data.copy(requestedAt = rideResponse.requestedAt)
+                    )
+                }
             }.onFailure { error ->
-                _state.update { UiState.Error(error = error.message) }
+                _state.update { it.copy(isLoading = false, error = error.message) }
             }
         }
     }
 
     private fun getLastRideRequest() {
-        _state.update { UiState.Loading }
+        _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
-            interactor.getLastRideRequest().onSuccess {
-                rideRequestState = rideRequestState.copy(requestedAt = it.requestedAt)
+            interactor.getLastRideRequest().onSuccess { rideResponse ->
+                _state.update {
+                    it.copy(
+                        data = it.data.copy(requestedAt = rideResponse.requestedAt)
+                    )
+                }
             }.onFailure { error ->
-                _state.update { UiState.Error(error = error.message) }
+                _state.update { it.copy(isLoading = false, error = error.message) }
             }
         }
     }

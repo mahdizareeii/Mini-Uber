@@ -1,8 +1,7 @@
 package com.shared.miniuber.core
 
-import androidx.navigation.NavBackStackEntry
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
-import androidx.navigation.toRoute
 import com.shared.miniuber.core.base.BaseContract
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.reflect.KClass
@@ -10,14 +9,24 @@ import kotlin.reflect.KClass
 class ComposeRouter : BaseContract.Router {
 
     private var navController: NavController? = null
-    var lastBackStackEntry: NavBackStackEntry? =null
 
     fun initNavController(navController: NavController) {
         this.navController = navController
     }
 
-    fun setCurrentBackStackEntry(backStackEntry: NavBackStackEntry) {
-        this.lastBackStackEntry = backStackEntry
+    fun clearNavController(controller: NavController) {
+        if (navController === controller) navController = null
+    }
+
+    fun forScreen(savedStateHandle: SavedStateHandle): BaseContract.Router {
+        return ScreenRouter(
+            router = this,
+            savedStateHandle = savedStateHandle
+        )
+    }
+
+    override fun <T : Any> getScreenArg(screen: KClass<T>): T {
+        error("Use a destination-scoped router to read arguments for $screen")
     }
 
     override fun <RESULT> setParentResult(key: String, value: RESULT) {
@@ -29,10 +38,6 @@ class ComposeRouter : BaseContract.Router {
             key = key,
             initialValue = initialValue
         )
-    }
-
-    override fun <T> getScreenArg(screen: KClass<*>): T {
-        return lastBackStackEntry?.toRoute(route = screen) ?: error("No back stack entry available for screen $screen call setCurrentBackStackEntry in composable fun of your NavHost")
     }
 
     override fun navigate(route: String) {

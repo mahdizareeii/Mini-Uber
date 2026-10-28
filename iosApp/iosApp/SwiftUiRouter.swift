@@ -8,12 +8,15 @@ import ComposeApp
 //This class only use for native screen graph scenarios
 class SwiftUiRouter: BaseContractRouter {
     @Published var path: [AppScreens] = []
-    
-    func getResultFlow(key: String, initialValue: Any?) -> (any Kotlinx_coroutines_coreStateFlow)? {
-        return nil
+
+    func getScreenArg(screen: any KotlinKClass) -> Any {
+        guard let argument = path.last else {
+            preconditionFailure("No current screen arguments are available")
+        }
+        return argument
     }
     
-    func getScreenArg(screen: any KotlinKClass) -> Any? {
+    func getResultFlow(key: String, initialValue: Any?) -> (any Kotlinx_coroutines_coreStateFlow)? {
         return nil
     }
     

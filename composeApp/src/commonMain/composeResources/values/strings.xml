@@ -11,4 +11,7 @@
     <string name="starting_location">Starting Location</string>
     <string name="error">Error</string>
     <string name="cancel_ride">Cancel Ride</string>
+    <string name="retry">Retry</string>
+    <string name="back_home">Back to home</string>
+    <string name="requesting_ride">Requesting your ride</string>
 </resources>

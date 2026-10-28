@@ -4,6 +4,12 @@ import kotlinx.serialization.Serializable
 
 sealed class AppScreens {
     @Serializable
+    data object LandingScreen : AppScreens()
+
+    @Serializable
+    data object AdaptiveDemoScreen : AppScreens()
+
+    @Serializable
     data object HomeScreen : AppScreens()
 
     @Serializable

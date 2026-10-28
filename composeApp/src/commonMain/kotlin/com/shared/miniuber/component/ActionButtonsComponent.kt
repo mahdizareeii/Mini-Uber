@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 fun ActionButtonsComponent(
     modifier: Modifier = Modifier,
     isLoading: Boolean,
+    enabled: Boolean = true,
     confirmText: String,
     cancelText: String? = null,
     onConfirmClick: () -> Unit,
@@ -40,6 +41,7 @@ fun ActionButtonsComponent(
     ) {
         ElevatedButton(
             onClick = onConfirmClick,
+            enabled = enabled,
             modifier = Modifier
                 .weight(1f)
                 .height(56.dp),
