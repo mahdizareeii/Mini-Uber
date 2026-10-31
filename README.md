@@ -29,23 +29,9 @@ CMP extends the Compose programming model to shared UI; native APIs remain avail
 
 The original screen → presenter → interactor → repository flow lives in shared Kotlin. **View** is a Compose screen, **Presenter** is a lifecycle ViewModel, **Interactor** exposes feature operations, **Entity** is a shared model, and **Router** owns navigation. Koin wires these dependencies. The adaptive feature reads local fixtures directly through its initial state.
 
-```mermaid
-flowchart TB
-    Android["Android host: MainActivity.setContent"] -->|Android library target| App
-    iOS["iOS host: SwiftUI and UIKit"] -->|Kotlin/Native ComposeApp framework| App
+[![Shared screen flow: 1. Compose sends a typed event to the presenter. 2. The presenter optionally requests data through an interactor and repository. 3. StateFlow returns the latest UiState to Compose. Navigation uses a separate router path.](artifacts/readme-diagrams/screen-state-flow.svg)](artifacts/readme-diagrams/screen-state-flow.svg)
 
-    subgraph Shared["composeApp / commonMain — shared Kotlin and Compose"]
-        App["App: Material3 theme and typed NavHost"] --> View["Compose screen / View"]
-        View -->|Typed events: onEvent| Presenter["Presenter / lifecycle ViewModel<br/>owns UiState StateFlow"]
-        Presenter -->|StateFlow: collectAsState| View
-        Presenter -->|Map and ride operations| Interactor
-        Interactor --> Repository["DriverRepository interface"]
-        Repository --> Fake["FakeDriverRepositoryImpl"]
-        Presenter -->|Typed navigation| Router["ComposeRouter / ScreenRouter"]
-        Router -->|Navigate or decode arguments| Destination["Typed back stack / SavedStateHandle"]
-        Fixtures["DemoRides: bundled fixtures"] -->|Adaptive initial state| Presenter
-    end
-```
+**Follow 1 → 2 → 3:** user input reaches the presenter, any data result updates state, and Compose renders that state. Navigation follows the separate purple path. Click the graphic to view it full size.
 
 ## How state management works
 
@@ -73,14 +59,9 @@ The iOS GIF shows **iPhone Duo in Xcode 27.1 Device Hub**. Apple documents that 
 
 [`AdaptiveWindowState`](composeApp/src/commonMain/kotlin/com/shared/miniuber/component/adaptive/AdaptiveWindowState.kt) validates region rectangles and publishes them with `mutableStateOf`. `MainViewController` supplies that state through `LocalAdaptiveWindowState`; the iOS `actual currentAdaptiveRegions()` reads it during composition.
 
-```mermaid
-flowchart LR
-    Android["Android: hinge bounds in pixels"] -->|Convert by density| Regions
-    UIKit["iPhone Duo: UIKit reserved regions"] -->|Convert view points to window points| Regions
-    Regions["Shared AdaptiveRegion list"] --> Policy["Shared adaptivePaneLayout policy"]
-    Content["Content size, window origin, RTL, selection"] --> Policy
-    Policy --> Panes["Measured and placed Compose panes"]
-```
+[![Adaptive layout flow: Android hinge bounds and iPhone Duo UIKit regions enter a shared pane policy. Compose renders a compact list or details, side-by-side panes, or tabletop panes while preserving selection and scroll state.](artifacts/readme-diagrams/adaptive-layout-flow.svg)](artifacts/readme-diagrams/adaptive-layout-flow.svg)
+
+**Read top to bottom:** each platform supplies geometry, shared Kotlin calculates safe pane bounds, and Compose places the list and details. The device shapes illustrate layout rules; the GIFs above show the running app.
 
 The main technical challenges are handled in shared code:
 
