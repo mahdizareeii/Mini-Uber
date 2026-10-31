@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1120" role="img" aria-labelledby="title desc" viewBox="0 0 900 1120">
+<title id="title">Native geometry to adaptive Compose panes</title><desc id="desc">The Android adapter converts Material3 Adaptive hinge bounds from window pixels to dp. On iPhone Duo, UIKit reserved regions are converted from view points to window points. Shared code subtracts the Compose content origin and uses content size, RTL, selection and safe regions to calculate pane bounds. Compose renders compact list or details, side-by-side book or wide panes, or top-and-bottom tabletop panes. Selection and scroll state are owned outside pane placement; iOS retains its Compose controller.</desc>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="16" y="16" width="868" height="1088" rx="24" fill="white" stroke="#dce3e8" stroke-width="2"/>
+<text x="450" y="65" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">How the layout adapts</text>
+<text x="450" y="106" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Native geometry → shared policy → Compose panes</text>
+<rect x="55" y="150" width="380" height="150" rx="16" fill="#f7fafb" stroke="#c5d7dc" stroke-width="2"/>
+<text x="245" y="188" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Android foldables</text>
+<text x="245" y="232" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">Material3 Adaptive</text>
+<text x="245" y="272" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Hinge bounds: pixels → dp</text>
+<rect x="465" y="150" width="380" height="150" rx="16" fill="#f7fafb" stroke="#c5d7dc" stroke-width="2"/>
+<text x="655" y="188" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">iPhone Duo · iOS</text>
+<text x="655" y="232" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">UIKit reserved regions</text>
+<text x="655" y="272" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">View points → window points</text>
+<polyline points="245,300 245,335 450,335 450,375" fill="none" stroke="#087f8c" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="450.00,375.00 456.00,363.00 444.00,363.00" fill="#087f8c"/>
+<polyline points="655,300 655,335 450,335 450,375" fill="none" stroke="#087f8c" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="450.00,375.00 456.00,363.00 444.00,363.00" fill="#087f8c"/>
+<rect x="80" y="375" width="740" height="230" rx="16" fill="#edf8f8" stroke="#087f8c" stroke-width="2"/>
+<text x="450" y="414" font-family="Arial, sans-serif" font-size="31" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Shared pane policy</text>
+<text x="450" y="453" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">AdaptiveRegion bounds + available content size</text>
+<text x="450" y="495" font-family="Arial, sans-serif" font-size="25" font-weight="400" fill="#087f8c" text-anchor="middle" dominant-baseline="central">Local bounds = window bounds − content origin</text>
+<text x="450" y="536" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">Place content around folds and occlusions</text>
+<text x="450" y="578" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Also considers RTL and compact selection state</text>
+<polyline points="450,605 450,653" fill="none" stroke="#087f8c" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="450.00,653.00 456.00,641.00 444.00,641.00" fill="#087f8c"/>
+<text x="450" y="687" font-family="Arial, sans-serif" font-size="29" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Compose pane layouts · schematic</text>
+<rect x="55" y="726" width="240" height="250" rx="16" fill="#f7fafb" stroke="#c5d7dc" stroke-width="2"/>
+<text x="175" y="758" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Compact</text>
+<rect x="330" y="726" width="240" height="250" rx="16" fill="#f7fafb" stroke="#c5d7dc" stroke-width="2"/>
+<text x="450" y="758" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Book / wide</text>
+<rect x="605" y="726" width="240" height="250" rx="16" fill="#f7fafb" stroke="#c5d7dc" stroke-width="2"/>
+<text x="725" y="758" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Tabletop</text>
+<rect x="120" y="791" width="110" height="132" rx="12" fill="white" stroke="#17242c" stroke-width="2"/>
+<rect x="127" y="799" width="96" height="116" rx="5" fill="#edf8f8" stroke="#a2c6ca" stroke-width="1.5"/>
+<text x="175.0" y="857.0" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#087f8c" text-anchor="middle" dominant-baseline="central">List</text>
+<text x="175" y="951" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">List or details</text>
+<rect x="355" y="806" width="190" height="106" rx="12" fill="white" stroke="#17242c" stroke-width="2"/>
+<rect x="363" y="814" width="60" height="90" rx="5" fill="#edf8f8" stroke="#a2c6ca" stroke-width="1.5"/>
+<text x="393.0" y="859.0" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#087f8c" text-anchor="middle" dominant-baseline="central">List</text>
+<rect x="427" y="814" width="8" height="90" rx="0" fill="#b7c2cc" stroke="#b7c2cc" stroke-width="0"/>
+<rect x="439" y="814" width="98" height="90" rx="5" fill="#edf8f8" stroke="#a2c6ca" stroke-width="1.5"/>
+<text x="488.0" y="859.0" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#087f8c" text-anchor="middle" dominant-baseline="central">Details</text>
+<text x="450" y="951" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Side by side</text>
+<rect x="670" y="791" width="110" height="132" rx="12" fill="white" stroke="#17242c" stroke-width="2"/>
+<rect x="678" y="799" width="94" height="51" rx="5" fill="#edf8f8" stroke="#a2c6ca" stroke-width="1.5"/>
+<text x="725.0" y="824.5" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#087f8c" text-anchor="middle" dominant-baseline="central">List</text>
+<rect x="678" y="854" width="94" height="7" rx="0" fill="#b7c2cc" stroke="#b7c2cc" stroke-width="0"/>
+<rect x="678" y="865" width="94" height="50" rx="5" fill="#edf8f8" stroke="#a2c6ca" stroke-width="1.5"/>
+<text x="725.0" y="890.0" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#087f8c" text-anchor="middle" dominant-baseline="central">Details</text>
+<text x="725" y="951" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Top and bottom</text>
+<rect x="80" y="1010" width="740" height="64" rx="16" fill="#edf8f8" stroke="#a2c6ca" stroke-width="2"/>
+<text x="450" y="1042" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#087f8c" text-anchor="middle" dominant-baseline="central">Selection + scroll state stay outside pane placement</text>
+<text x="450" y="1090" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Fold or resize → remeasure panes; retain the iOS Compose controller.</text>
+</svg>

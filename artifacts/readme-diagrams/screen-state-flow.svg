@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="960" role="img" aria-labelledby="title desc" viewBox="0 0 900 960">
+<title id="title">Shared screen state and navigation flow</title><desc id="desc">Android and iOS run the same shared Compose screen. Step 1: the screen sends typed events to its presenter. Step 2: when data is needed, the presenter calls an interactor and DriverRepository, backed by FakeDriverRepositoryImpl, and receives the result. Step 3: the presenter updates UiState; the screen observes read-only StateFlow with collectAsState and recomposes. Navigation separately goes from presenter to router to a typed destination. The adaptive demo uses bundled rides without repository calls.</desc>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="16" y="16" width="868" height="928" rx="24" fill="white" stroke="#dce3e8" stroke-width="2"/>
+<text x="450" y="65" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Shared screen flow</text>
+<text x="450" y="106" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Android + iOS · composeApp / commonMain</text>
+<rect x="80" y="150" width="740" height="110" rx="16" fill="#f7fafb" stroke="#c5d7dc" stroke-width="2"/>
+<text x="450" y="188" font-family="Arial, sans-serif" font-size="31" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Compose screen · View</text>
+<text x="450" y="230" font-family="Arial, sans-serif" font-size="25" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Renders state and forwards user input</text>
+<polyline points="230,260 230,415" fill="none" stroke="#2457a7" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="230.00,415.00 236.00,403.00 224.00,403.00" fill="#2457a7"/>
+<rect x="132.515625" y="301.5" width="194.96875" height="33" rx="4" fill="white" stroke="white" stroke-width="0"/>
+<text x="230" y="318" font-family="Arial, sans-serif" font-size="25" font-weight="400" fill="#2457a7" text-anchor="middle" dominant-baseline="central">1 · Typed event</text>
+<rect x="141.25" y="336.5" width="177.5" height="31" rx="4" fill="white" stroke="white" stroke-width="0"/>
+<text x="230" y="352" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">onEvent(event)</text>
+<polyline points="670,415 670,260" fill="none" stroke="#087f8c" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="670.00,260.00 664.00,272.00 676.00,272.00" fill="#087f8c"/>
+<rect x="576.75" y="301.5" width="186.5" height="33" rx="4" fill="white" stroke="white" stroke-width="0"/>
+<text x="670" y="318" font-family="Arial, sans-serif" font-size="25" font-weight="400" fill="#087f8c" text-anchor="middle" dominant-baseline="central">3 · Latest state</text>
+<rect x="579.0" y="336.5" width="182.0" height="31" rx="4" fill="white" stroke="white" stroke-width="0"/>
+<text x="670" y="352" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">collectAsState()</text>
+<rect x="80" y="415" width="740" height="140" rx="16" fill="#edf8f8" stroke="#087f8c" stroke-width="2"/>
+<text x="450" y="453" font-family="Arial, sans-serif" font-size="31" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Presenter · ViewModel</text>
+<text x="450" y="497" font-family="Arial, sans-serif" font-size="26" font-weight="400" fill="#087f8c" text-anchor="middle" dominant-baseline="central">_state.update { state.copy(...) }</text>
+<text x="450" y="535" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Owns MutableStateFlow; exposes read-only StateFlow</text>
+<polyline points="230,555 230,650" fill="none" stroke="#2457a7" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="230.00,650.00 236.00,638.00 224.00,638.00" fill="#2457a7"/>
+<polyline points="670,650 670,555" fill="none" stroke="#087f8c" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="670.00,555.00 664.00,567.00 676.00,567.00" fill="#087f8c"/>
+<rect x="230.5" y="587.0" width="439.0" height="32" rx="4" fill="white" stroke="white" stroke-width="0"/>
+<text x="450" y="603" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">2 · Data request / result (when needed)</text>
+<rect x="80" y="650" width="740" height="135" rx="16" fill="#f7fafb" stroke="#c5d7dc" stroke-width="2"/>
+<text x="450" y="686" font-family="Arial, sans-serif" font-size="29" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Interactor ↔ DriverRepository</text>
+<text x="450" y="728" font-family="Arial, sans-serif" font-size="25" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">FakeDriverRepositoryImpl</text>
+<text x="450" y="764" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Demo responses return to the presenter</text>
+<rect x="80" y="820" width="740" height="76" rx="16" fill="#f6f1fb" stroke="#cdbce2" stroke-width="2"/>
+<text x="450" y="847" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#7042a8" text-anchor="middle" dominant-baseline="central">Navigation: Presenter → Router → destination</text>
+<text x="450" y="879" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Typed routes and destination arguments</text>
+<text x="450" y="924" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Adaptive demo uses bundled rides; no repository calls.</text>
+</svg>
