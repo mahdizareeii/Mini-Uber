@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">
+<rect width="100%" height="100%" fill="white"/>
+<text x="70" y="65" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#17242c" text-anchor="start" dominant-baseline="central">Align the fold with Compose content</text>
+<text x="70" y="113" font-family="Arial, sans-serif" font-size="25" font-weight="400" fill="#52646f" text-anchor="start" dominant-baseline="central">Convert native bounds to window coordinates, then subtract the content origin.</text>
+<rect x="70" y="180" width="610" height="180" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="375" y="219" font-family="Arial, sans-serif" font-size="29" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">iPhone Duo · UIKit</text>
+<text x="375" y="267" font-family="Arial, sans-serif" font-size="25" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">View-local reserved-region points</text>
+<text x="375" y="310" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#087f8c" text-anchor="middle" dominant-baseline="central">convert(region.frame, to: window)</text>
+<text x="375" y="341" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Result: window-relative points</text>
+<rect x="920" y="180" width="610" height="180" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="1225" y="219" font-family="Arial, sans-serif" font-size="29" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Android · Material3 Adaptive</text>
+<text x="1225" y="267" font-family="Arial, sans-serif" font-size="25" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">Window-relative hinge pixels</text>
+<text x="1225" y="310" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#087f8c" text-anchor="middle" dominant-baseline="central">bounds / LocalDensity.current.density</text>
+<text x="1225" y="341" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Result: window-relative dp</text>
+<polyline points="375,360 375,415 660,415 660,450" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="660.00,450.00 666.00,438.00 654.00,438.00" fill="#087f8c"/>
+<polyline points="1225,360 1225,415 940,415 940,450" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="940.00,450.00 946.00,438.00 934.00,438.00" fill="#087f8c"/>
+<rect x="500" y="450" width="600" height="120" rx="16" fill="#edf8f8" stroke="#087f8c" stroke-width="2"/>
+<text x="800" y="488" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Shared AdaptiveRegion list</text>
+<text x="800" y="534" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">Window-relative dp; UIKit points use this scale on iOS</text>
+<polyline points="800,570 800,660" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="800.00,660.00 806.00,648.00 794.00,648.00" fill="#087f8c"/>
+<rect x="593.25" y="600.5" width="413.5" height="29" rx="4" fill="white" stroke="white" stroke-width="0"/>
+<text x="800" y="615" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">translate into the content coordinate space</text>
+<rect x="70" y="660" width="330" height="170" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="235" y="700" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Compose content</text>
+<text x="235" y="744" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">safeDrawing insets</text>
+<text x="235" y="783" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">positionInWindow / density</text>
+<rect x="500" y="660" width="600" height="170" rx="16" fill="#edf8f8" stroke="#087f8c" stroke-width="2"/>
+<text x="800" y="700" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Content-local fold bounds</text>
+<text x="800" y="748" font-family="Arial, sans-serif" font-size="29" font-weight="400" fill="#087f8c" text-anchor="middle" dominant-baseline="central">local = window − contentOrigin</text>
+<text x="800" y="791" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Origin is measured after safe-area padding</text>
+<polyline points="400,745 500,745" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="500.00,745.00 488.00,739.00 488.00,751.00" fill="#087f8c"/>
+<rect x="1200" y="660" width="330" height="170" rx="16" fill="#f7fafb" stroke="#c5d7dc" stroke-width="2"/>
+<text x="1365" y="697" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Example · shared dp</text>
+<text x="1365" y="739" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">Window fold y = 360</text>
+<text x="1365" y="776" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">Content origin y = 40</text>
+<text x="1365" y="813" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#087f8c" text-anchor="middle" dominant-baseline="central">Local fold y = 320</text>
+<polyline points="800,830 800,910" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="800.00,910.00 806.00,898.00 794.00,898.00" fill="#087f8c"/>
+<rect x="500" y="910" width="600" height="120" rx="16" fill="#edf8f8" stroke="#087f8c" stroke-width="2"/>
+<text x="800" y="949" font-family="Arial, sans-serif" font-size="29" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Shared pane policy → Compose Layout</text>
+<text x="800" y="993" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">Keep drawing and touch targets outside occlusions</text>
+<text x="800" y="1070" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">RTL preserves physical fold coordinates and swaps pane roles.</text>
+</svg>

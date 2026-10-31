@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1350" viewBox="0 0 1600 1350">
+<rect width="100%" height="100%" fill="white"/>
+<text x="70" y="65" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#17242c" text-anchor="start" dominant-baseline="central">Native geometry, shared Compose screens</text>
+<text x="70" y="113" font-family="Arial, sans-serif" font-size="25" font-weight="400" fill="#52646f" text-anchor="start" dominant-baseline="central">Mini-Uber Part 2 · Kotlin Multiplatform on Android and iPhone Duo</text>
+<rect x="500" y="160" width="600" height="860" rx="22" fill="#f7fafb" stroke="#c5d7dc" stroke-width="2"/>
+<text x="800" y="203" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#087f8c" text-anchor="middle" dominant-baseline="central">Shared Kotlin · composeApp / commonMain</text>
+<text x="250" y="202" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#52646f" text-anchor="middle" dominant-baseline="central">ANDROID</text>
+<text x="1350" y="202" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#52646f" text-anchor="middle" dominant-baseline="central">iOS</text>
+<rect x="70" y="265" width="360" height="160" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="250" y="303" font-family="Arial, sans-serif" font-size="29" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">MainActivity</text>
+<text x="250" y="348" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">setContent { App() }</text>
+<text x="250" y="391" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Android library target</text>
+<rect x="1170" y="265" width="360" height="160" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="1350" y="303" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">SwiftUI → UIKit host</text>
+<text x="1350" y="348" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">MainViewController</text>
+<text x="1350" y="391" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Static ComposeApp framework</text>
+<rect x="550" y="270" width="500" height="120" rx="16" fill="#edf8f8" stroke="#087f8c" stroke-width="2"/>
+<text x="800" y="307" font-family="Arial, sans-serif" font-size="31" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">App()</text>
+<text x="800" y="351" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">Material3 theme + typed NavHost</text>
+<polyline points="430,335 550,335" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="550.00,335.00 538.00,329.00 538.00,341.00" fill="#087f8c"/>
+<polyline points="1170,335 1050,335" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="1050.00,335.00 1062.00,341.00 1062.00,329.00" fill="#087f8c"/>
+<rect x="540" y="490" width="230" height="150" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="655" y="535" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Compose screen</text>
+<text x="655" y="581" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">List / detail panes</text>
+<rect x="840" y="490" width="230" height="150" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="955" y="526" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Presenter</text>
+<text x="955" y="568" font-family="Arial, sans-serif" font-size="19" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">ViewModel + StateFlow</text>
+<text x="955" y="607" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Typed router</text>
+<polyline points="655,390 655,490" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="655.00,490.00 661.00,478.00 649.00,478.00" fill="#087f8c"/>
+<rect x="597.0" y="427.0" width="116.0" height="28" rx="4" fill="#f7fafb" stroke="#f7fafb" stroke-width="0"/>
+<text x="655" y="441" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">destination</text>
+<polyline points="770,535 840,535" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="840.00,535.00 828.00,529.00 828.00,541.00" fill="#087f8c"/>
+<rect x="764.25" y="452.5" width="81.5" height="29" rx="4" fill="#f7fafb" stroke="#f7fafb" stroke-width="0"/>
+<text x="805" y="467" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">events</text>
+<polyline points="955,640 955,690 655,690 655,640" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="655.00,640.00 649.00,652.00 661.00,652.00" fill="#087f8c"/>
+<rect x="665.75" y="675.5" width="278.5" height="29" rx="4" fill="#f7fafb" stroke="#f7fafb" stroke-width="0"/>
+<text x="805" y="690" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">StateFlow → collectAsState</text>
+<rect x="70" y="800" width="360" height="160" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="250" y="839" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Material3 Adaptive</text>
+<text x="250" y="884" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">Window hinge bounds</text>
+<text x="250" y="924" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Pixels converted to dp</text>
+<rect x="1170" y="800" width="360" height="160" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="1350" y="836" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">UIKit reserved regions</text>
+<text x="1350" y="879" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">View → window points</text>
+<text x="1350" y="923" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">AdaptiveWindowState</text>
+<rect x="550" y="810" width="500" height="150" rx="16" fill="#edf8f8" stroke="#087f8c" stroke-width="2"/>
+<text x="800" y="852" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Shared adaptive layout policy</text>
+<text x="800" y="897" font-family="Arial, sans-serif" font-size="22" font-weight="400" fill="#17242c" text-anchor="middle" dominant-baseline="central">Regions + content bounds → pane bounds</text>
+<text x="800" y="933" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Selection stays in the presenter</text>
+<polyline points="430,885 550,885" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="550.00,885.00 538.00,879.00 538.00,891.00" fill="#087f8c"/>
+<rect x="447.5" y="846.0" width="85.0" height="28" rx="4" fill="white" stroke="white" stroke-width="0"/>
+<text x="490" y="860" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">regions</text>
+<polyline points="1170,885 1050,885" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="1050.00,885.00 1062.00,891.00 1062.00,879.00" fill="#087f8c"/>
+<rect x="1067.5" y="846.0" width="85.0" height="28" rx="4" fill="white" stroke="white" stroke-width="0"/>
+<text x="1110" y="860" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">regions</text>
+<polyline points="550,852 520,852 520,610 540,610" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="540.00,610.00 528.00,604.00 528.00,616.00" fill="#087f8c"/>
+<rect x="543.5" y="761.0" width="161.0" height="28" rx="4" fill="#f7fafb" stroke="#f7fafb" stroke-width="0"/>
+<text x="624" y="775" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">pane placement</text>
+<text x="800" y="738" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Adaptive data: DemoRides → initial state</text>
+<text x="800" y="1050" font-family="Arial, sans-serif" font-size="23" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">On iOS, one retained Compose controller receives geometry updates.</text>
+<rect x="70" y="1110" width="1460" height="180" rx="18" fill="#f7fafb" stroke="#c5d7dc" stroke-width="2"/>
+<text x="800" y="1148" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#087f8c" text-anchor="middle" dominant-baseline="central">Map and ride features · separate shared data path</text>
+<rect x="100" y="1190" width="250" height="75" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="225.0" y="1214" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Presenter</text>
+<text x="225.0" y="1245" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">ViewModel</text>
+<rect x="440" y="1190" width="250" height="75" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="565.0" y="1214" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Interactor</text>
+<text x="565.0" y="1245" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Feature operations</text>
+<rect x="780" y="1190" width="310" height="75" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="935.0" y="1214" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">DriverRepository</text>
+<text x="935.0" y="1245" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Shared interface</text>
+<rect x="1180" y="1190" width="320" height="75" rx="16" fill="white" stroke="#c5d7dc" stroke-width="2"/>
+<text x="1340.0" y="1214" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#17242c" text-anchor="middle" dominant-baseline="central">Fake repository</text>
+<text x="1340.0" y="1245" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#52646f" text-anchor="middle" dominant-baseline="central">Local demo responses</text>
+<polyline points="350,1227 440,1227" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="440.00,1227.00 428.00,1221.00 428.00,1233.00" fill="#087f8c"/>
+<polyline points="690,1227 780,1227" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="780.00,1227.00 768.00,1221.00 768.00,1233.00" fill="#087f8c"/>
+<polyline points="1090,1227 1180,1227" fill="none" stroke="#087f8c" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="1180.00,1227.00 1168.00,1221.00 1168.00,1233.00" fill="#087f8c"/>
+</svg>
