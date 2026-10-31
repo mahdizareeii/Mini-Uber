@@ -26,39 +26,47 @@ class HomePresenter(
     private val resolveString: suspend (StringResource) -> String = { getString(it) }
 ) : HomeContract.Presenter() {
 
-    private var homeState = HomeState()
-        set(value) {
-            field = value
-            _state.update { it.copy(data = value, isLoading = false, error = null) }
-        }
-
     override fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.Init -> init()
             is HomeEvent.NavigateBack -> router.navigateUp()
             is HomeEvent.OnMapStateUpdated -> {
-                homeState = homeState.copy(
-                    mapState = homeState.mapState.copy(cameraPosition = event.latLng)
-                )
+                _state.update {
+                    it.copy(
+                        data = it.data.copy(
+                            mapState = it.data.mapState.copy(cameraPosition = event.latLng)
+                        ),
+                        isLoading = false,
+                        error = null
+                    )
+                }
                 getNearbyDrivers()
             }
 
-            is HomeEvent.CancelTravel -> homeState = homeState.copy(
-                mapState = homeState.mapState.copy(startPoint = null, endPoint = null),
-            )
+            is HomeEvent.CancelTravel -> _state.update {
+                it.copy(
+                    data = it.data.copy(
+                        mapState = it.data.mapState.copy(startPoint = null, endPoint = null)
+                    ),
+                    isLoading = false,
+                    error = null
+                )
+            }
 
             is HomeEvent.OnConfirmButtonClicked -> {
+                val mapState = _state.value.data.mapState
                 when {
-                    homeState.mapState.startPoint == null -> onPickupLocationSelected()
-                    homeState.mapState.endPoint == null -> onDropOffLocationSelected()
+                    mapState.startPoint == null -> onPickupLocationSelected()
+                    mapState.endPoint == null -> onDropOffLocationSelected()
                     else -> navigateToRideRequest()
                 }
             }
 
             is HomeEvent.OnCancelButtonClicked -> {
+                val mapState = _state.value.data.mapState
                 when {
-                    homeState.mapState.endPoint != null -> changeStateToDropOffLocation()
-                    homeState.mapState.startPoint != null -> changeStateToPickupLocation()
+                    mapState.endPoint != null -> changeStateToDropOffLocation()
+                    mapState.startPoint != null -> changeStateToPickupLocation()
                 }
             }
         }
@@ -67,17 +75,22 @@ class HomePresenter(
     private fun getNearbyDrivers() {
         _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
+            val cameraPosition = _state.value.data.mapState.cameraPosition
             interactor.getNearbyDrivers(
                 LocationRequest(
-                    lat = homeState.mapState.cameraPosition.latitude,
-                    lng = homeState.mapState.cameraPosition.longitude
+                    lat = cameraPosition.latitude,
+                    lng = cameraPosition.longitude
                 )
             ).onSuccess { result ->
-                homeState = homeState.copy(
-                    driversCountState = homeState.driversCountState.copy(
-                        count = result.size
+                _state.update {
+                    it.copy(
+                        data = it.data.copy(
+                            driversCountState = it.data.driversCountState.copy(count = result.size)
+                        ),
+                        isLoading = false,
+                        error = null
                     )
-                )
+                }
             }.onFailure { error ->
                 _state.update { it.copy(isLoading = false, error = error.message) }
             }
@@ -87,22 +100,14 @@ class HomePresenter(
     private fun init() {
         _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
-            interactor.getLastTrip().onSuccess {
-                when (val state = it.state) {
-                    is TripResponse.TripState.EndTrip -> {
-                        homeState = homeState
-                    }
-
-                    is TripResponse.TripState.NoTrip -> {
-                        homeState = homeState
-                    }
-
-                    is TripResponse.TripState.OnTrip -> {
-                        homeState = homeState
-                    }
+            interactor.getLastTrip().onSuccess { trip ->
+                _state.update { it.copy(isLoading = false, error = null) }
+                when (trip.state) {
+                    is TripResponse.TripState.EndTrip,
+                    is TripResponse.TripState.NoTrip,
+                    is TripResponse.TripState.OnTrip -> Unit
 
                     is TripResponse.TripState.NavigateToRideRequest -> {
-                        homeState = homeState
                         router.navigate<AppScreens.RideRequestScreen>(
                             route = AppScreens.RideRequestScreen(),
                             popUpTo = AppScreens.HomeScreen::class,
@@ -118,50 +123,69 @@ class HomePresenter(
 
     private fun onPickupLocationSelected() {
         viewModelScope.launch {
-            homeState = homeState.copy(
-                mapState = homeState.mapState.copy(
-                    startPoint = MarkerData(
-                        latLng = homeState.mapState.cameraPosition,
-                        title = resolveString(Res.string.pickup),
-                        snipped = resolveString(Res.string.starting_location)
-                    )
-                ),
-                confirmButtonState = homeState.confirmButtonState.copy(
-                    text = Res.string.drop_off
-                ),
-                cancelButtonState = ButtonState(text = Res.string.empty)
-            )
+            val cameraPosition = _state.value.data.mapState.cameraPosition
+            val title = resolveString(Res.string.pickup)
+            val snipped = resolveString(Res.string.starting_location)
+            _state.update {
+                it.copy(
+                    data = it.data.copy(
+                        mapState = it.data.mapState.copy(
+                            startPoint = MarkerData(
+                                latLng = cameraPosition,
+                                title = title,
+                                snipped = snipped
+                            )
+                        ),
+                        confirmButtonState = it.data.confirmButtonState.copy(
+                            text = Res.string.drop_off
+                        ),
+                        cancelButtonState = ButtonState(text = Res.string.empty)
+                    ),
+                    isLoading = false,
+                    error = null
+                )
+            }
         }
     }
 
     private fun onDropOffLocationSelected() {
         viewModelScope.launch {
-            homeState = homeState.copy(
-                mapState = homeState.mapState.copy(
-                    endPoint = MarkerData(
-                        latLng = homeState.mapState.cameraPosition,
-                        title = resolveString(Res.string.drop_off),
-                        snipped = resolveString(Res.string.destination)
-                    )
-                ),
-                confirmButtonState = homeState.confirmButtonState.copy(
-                    text = Res.string.search_driver
-                ),
-                markerState = homeState.markerState.copy(visible = false)
-            )
+            val cameraPosition = _state.value.data.mapState.cameraPosition
+            val title = resolveString(Res.string.drop_off)
+            val snipped = resolveString(Res.string.destination)
+            _state.update {
+                it.copy(
+                    data = it.data.copy(
+                        mapState = it.data.mapState.copy(
+                            endPoint = MarkerData(
+                                latLng = cameraPosition,
+                                title = title,
+                                snipped = snipped
+                            )
+                        ),
+                        confirmButtonState = it.data.confirmButtonState.copy(
+                            text = Res.string.search_driver
+                        ),
+                        markerState = it.data.markerState.copy(visible = false)
+                    ),
+                    isLoading = false,
+                    error = null
+                )
+            }
         }
     }
 
     private fun navigateToRideRequest() {
-        if (homeState.mapState.startPoint == null) return
-        if (homeState.mapState.endPoint == null) return
+        val mapState = _state.value.data.mapState
+        val pickup = mapState.startPoint ?: return
+        val dropOff = mapState.endPoint ?: return
 
         router.navigate(
             route = AppScreens.RideRequestScreen(
-                pickupLat = homeState.mapState.startPoint!!.latLng.latitude,
-                pickupLng = homeState.mapState.startPoint!!.latLng.longitude,
-                dropOffLat = homeState.mapState.endPoint!!.latLng.latitude,
-                dropOffLng = homeState.mapState.endPoint!!.latLng.longitude
+                pickupLat = pickup.latLng.latitude,
+                pickupLng = pickup.latLng.longitude,
+                dropOffLat = dropOff.latLng.latitude,
+                dropOffLng = dropOff.latLng.longitude
             ),
             popUpTo = AppScreens.HomeScreen::class,
             popUpToInclusive = true
@@ -169,23 +193,35 @@ class HomePresenter(
     }
 
     private fun changeStateToDropOffLocation() {
-        homeState = homeState.copy(
-            mapState = homeState.mapState.copy(endPoint = null),
-            confirmButtonState = homeState.confirmButtonState.copy(
-                text = Res.string.drop_off
-            ),
-            markerState = homeState.markerState.copy(visible = true)
-        )
+        _state.update {
+            it.copy(
+                data = it.data.copy(
+                    mapState = it.data.mapState.copy(endPoint = null),
+                    confirmButtonState = it.data.confirmButtonState.copy(
+                        text = Res.string.drop_off
+                    ),
+                    markerState = it.data.markerState.copy(visible = true)
+                ),
+                isLoading = false,
+                error = null
+            )
+        }
     }
 
     private fun changeStateToPickupLocation() {
-        homeState = homeState.copy(
-            mapState = homeState.mapState.copy(startPoint = null),
-            confirmButtonState = homeState.confirmButtonState.copy(
-                text = Res.string.pickup_location
-            ),
-            cancelButtonState = null,
-            markerState = homeState.markerState.copy(visible = true)
-        )
+        _state.update {
+            it.copy(
+                data = it.data.copy(
+                    mapState = it.data.mapState.copy(startPoint = null),
+                    confirmButtonState = it.data.confirmButtonState.copy(
+                        text = Res.string.pickup_location
+                    ),
+                    cancelButtonState = null,
+                    markerState = it.data.markerState.copy(visible = true)
+                ),
+                isLoading = false,
+                error = null
+            )
+        }
     }
 }

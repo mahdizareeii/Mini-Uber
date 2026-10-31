@@ -30,6 +30,7 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import kotlin.reflect.KClass
@@ -104,6 +105,7 @@ class ComposeAppCommonTest {
         val presenter = RideRequestPresenter(interactor = interactor, router = FakeRouter(argument = validRoute))
 
         presenter.onEvent(event = RideRequestEvent.Init)
+        assertTrue(presenter.state.value.isLoading)
         advanceUntilIdle()
 
         // The original NaN comparison falls back to getLastRideRequest, even for these coordinates.
@@ -111,6 +113,7 @@ class ComposeAppCommonTest {
         assertTrue(interactor.requests.isEmpty())
         assertEquals(exampleRide.requestedAt, presenter.state.value.data.requestedAt)
         assertFalse(presenter.state.value.isLoading)
+        assertNull(presenter.state.value.error)
     }
 
     @Test
@@ -188,6 +191,7 @@ class ComposeAppCommonTest {
         val presenter = HomePresenter(interactor = interactor, router = FakeRouter()) { "label" }
         presenter.onEvent(event = HomeEvent.Init)
         advanceUntilIdle()
+        assertFalse(presenter.state.value.isLoading)
         val original = presenter.state.value.data
         assertTrue(interactor.locations.isEmpty())
 
@@ -242,6 +246,33 @@ class ComposeAppCommonTest {
         presenter.onEvent(event = HomeEvent.OnConfirmButtonClicked)
 
         assertEquals(listOf<Any>(AppScreens.RideRequestScreen(35.6997, 51.3380, 36.0, 52.0)), router.routes)
+    }
+
+    @Test
+    fun selectingLocationsKeepsThePointChosenBeforeLabelsResolve() = presenterTest {
+        val presenter = HomePresenter(interactor = FakeHomeInteractor(), router = FakeRouter()) {
+            delay(timeMillis = 50)
+            "label"
+        }
+        val pickup = presenter.state.value.data.mapState.cameraPosition
+        val dropOff = MapState.LatLng(36.0, 52.0)
+        val laterCameraPosition = MapState.LatLng(37.0, 53.0)
+
+        presenter.onEvent(event = HomeEvent.OnConfirmButtonClicked)
+        runCurrent()
+        presenter.onEvent(event = HomeEvent.OnMapStateUpdated(latLng = dropOff))
+        advanceUntilIdle()
+
+        assertEquals(pickup, presenter.state.value.data.mapState.startPoint?.latLng)
+        assertEquals(dropOff, presenter.state.value.data.mapState.cameraPosition)
+
+        presenter.onEvent(event = HomeEvent.OnConfirmButtonClicked)
+        runCurrent()
+        presenter.onEvent(event = HomeEvent.OnMapStateUpdated(latLng = laterCameraPosition))
+        advanceUntilIdle()
+
+        assertEquals(dropOff, presenter.state.value.data.mapState.endPoint?.latLng)
+        assertEquals(laterCameraPosition, presenter.state.value.data.mapState.cameraPosition)
     }
 
     private fun presenterTest(block: suspend TestScope.() -> Unit) = runTest {

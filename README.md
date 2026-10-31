@@ -14,19 +14,21 @@ The original map flow:
 
 Home offers two independent destinations:
 
-- **Map experience:** move the map and select a pickup point, then a destination, from its center. See a simulated nearby-driver count and a decorative curve, request a ride, and cancel it to return to map selection. Returning Home or using Back does not cancel an active ride; opening the map again resumes it within the same application session.
+- **Map experience:** move the map and select a pickup point, then a destination, from its center. See a simulated nearby-driver count and a decorative curve, request a ride, and cancel it to return to map selection. Cancel returns to map selection through navigation; Home opens the landing screen.
 - **Adaptive demo:** browse six local example rides and their read-only details. Resize, rotate, or fold the device to switch layouts while keeping the selected ride and scroll positions. This demo does not need a Maps key and does not create bookings.
 
-The map's fake repository keeps one active ride in memory. Restarting the application clears it. Driver information is generated locally; there is no backend, GPS integration, address search, road routing, payment processing, or full assigned/arriving/completed trip flow. The adaptive demo's completed rides are separate fixtures, not persisted map bookings. Android and iOS are the configured targets; there is no desktop target.
+The map keeps the original stateless fake repository. It generates sample driver and ride responses, reports `NoTrip`, and does not persist or cancel a booking. Its `requestedAt` field remains the original UUID placeholder, not a timestamp. Driver information is generated locally; there is no backend, GPS integration, address search, road routing, payment processing, or full assigned/arriving/completed trip flow. The adaptive demo's completed rides are separate fixtures, not persisted map bookings. Android and iOS are the configured targets; there is no desktop target.
 
 ### Adaptive behavior
 
-The GIFs below show the Android emulator and iPhone Duo simulator with local sample data. Neither demo requires Maps credentials. Android uses captured list/detail frames; iOS uses a simulator screen recording.
+The looping GIFs are exported from real native recordings of the running app at 15 fps. Android preserves the recorded inner/outer display switches; long idle pauses are trimmed. The iOS recorder follows one display, so separate compact and unfolded recordings are joined with cuts at display switches. Idle pauses are also trimmed, and its final ride-list frame is held for one second. Both demos use local sample data and work without Maps credentials.
 
-| Android adaptive demo | iOS adaptive demo |
+[Download the 40-second LinkedIn MP4](artifacts/adaptive-demo/adaptive-showcase.mp4) — Android followed by iOS, 1080×1350, H.264 at 30 fps, without audio.
+
+| Android · Pixel Fold | iOS · iPhone Duo |
 | --- | --- |
-| ![Android compact list and ride details](artifacts/adaptive-demo/android-adaptive.gif) | ![iPhone Duo ride selection and tabletop layout](artifacts/adaptive-demo/ios-adaptive.gif) |
-| Compact layout: ride list → selected details → list. | Select a ride, then fold into tabletop; the selection stays visible. |
+| ![Pixel Fold opening and closing through expanded, book, and compact layouts](artifacts/adaptive-demo/android-adaptive.gif) | ![iPhone Duo opening and closing through expanded, tabletop, and compact layouts](artifacts/adaptive-demo/ios-adaptive.gif) |
+| Select a ride → open → half open/book → fully open → closed details. | Select a ride → open → half open/tabletop → fully open → closed details → All rides. |
 
 - Below **600dp of measured content width**, the list and selected ride detail occupy separate screens. **All rides** and Android Back return from details to the list; Home returns to the landing screen.
 - At **600dp and above**, list and detail appear side by side. The list uses 35% of the width, clamped to 240–360dp, with a 24dp gap. With no explicit selection, the first ride appears in the detail pane without changing compact navigation state.
@@ -48,10 +50,10 @@ flowchart LR
 ```
 
 - **View:** shared Compose screens render immutable presenter state and send user events.
-- **Presenter:** lifecycle ViewModels manage selection, loading, errors, retry, navigation, and cancellation of obsolete driver searches.
+- **Presenter:** lifecycle ViewModels manage screen state, events, and navigation using the existing feature contracts.
 - **Interactor:** feature interfaces expose operations backed by the repository.
-- **Entity:** shared models represent locations, drivers, and ride requests. Coordinates are validated before submission.
-- **Router:** presenters read typed screen arguments through the router. Koin supplies a router bound to the destination's `SavedStateHandle`; an explicit `resume` argument distinguishes resuming a ride from creating one.
+- **Entity:** shared models represent locations, drivers, and ride requests.
+- **Router:** presenters read typed screen arguments through the router. Koin supplies a router bound to the destination's `SavedStateHandle`.
 
 `androidApp` contains the Android application entry point and platform configuration. `composeApp` contains the shared `core`, `data`, `domain`, `feature`, and `component` packages, shared tests, Android Maps Compose adapter, and iOS UIKit bridge. `iosApp` hosts the shared Compose controller in SwiftUI and implements the native Google Maps controller.
 
@@ -65,9 +67,9 @@ private val argument = router.getScreenArg<AppScreens.RideRequestScreen>(
 )
 ```
 
-`ScreenRouter` decodes those arguments from the presenter's own back-stack `SavedStateHandle`. They remain bound to that destination even if another screen becomes current. The screen and `App` do not unpack or pass a separate input object. `AppScreens.RideRequestScreen(resume = true)` explicitly resumes the active ride; a new ride requires valid pickup and destination coordinates. Missing coordinates remain absent, and valid zero coordinates are not used as a resume signal.
+`ScreenRouter` decodes those arguments from the presenter's own back-stack `SavedStateHandle`. They remain bound to that destination even if another screen becomes current. The screen and `App` do not unpack or pass a separate input object. The original `RideRequestScreen()` constructor and `Double.NaN` fallback are preserved. The original `isValidLocation()` comparison against `NaN` evaluates to false, so initialization follows the fake last-request path. This is retained original demo behavior, not production coordinate validation or persisted ride resumption.
 
-The map retains continuous camera-position callbacks and the original pickup → destination → request flow. Base-state, coordinate-validation, error/retry, cancellation, and ride-state fixes remain in place. Presenters keep only the latest driver lookup result, and selected points remain available while a recoverable error is shown.
+The map retains continuous camera-position callbacks and the original pickup → destination → request flow. Ride business logic has been restored to the original implementation. The shared base still provides immutable `UiState` snapshots and a stable presenter action stream; the separate Home and adaptive screens use that same base pattern.
 
 ## Toolchain and dependencies
 
@@ -168,46 +170,36 @@ With Xcode 27.1 and its simulator runtime configured:
 ./gradlew :composeApp:linkDebugFrameworkIosSimulatorArm64
 ```
 
-The current shared suite contains **41 tests**: 22 base/map/ride/Landing tests and 19 adaptive tests. Coverage includes coordinate validation, explicit ride resume, missing route arguments, cancellation, presenter action delivery, selection reset, failed requests, stale map results, Landing navigation, and returning Home without cancellation. Adaptive tests cover the 599/600dp boundary, pane sizing, RTL, thin folds, tabletop layout, window-coordinate conversion, occlusion avoidance, fallback when a pane is fully occluded, selection across layout changes, and presenter-driven Home navigation. The iOS suite runs these tests plus two real `SavedStateHandle` decoding tests for destination isolation and missing coordinates, for **43 tests** in total. A successful `help` task checks Gradle configuration; it does not replace Android Studio sync or an application smoke test.
+The shared suite contains **33 tests**: 14 base/original-ride/Landing tests and 19 adaptive tests. Coverage includes the original stateless repository behavior, original route fallback, navigation-only cancellation, map selection flow, immutable state snapshots, stable action delivery, Landing navigation, and destination-scoped arguments. Adaptive tests cover the 599/600dp boundary, pane sizing, RTL, thin folds, tabletop layout, window-coordinate conversion, occlusion avoidance, fallback when a pane is fully occluded, selection across layout changes, and Home navigation. The iOS suite adds two real `SavedStateHandle` decoding tests for **35 tests** in total.
 
-On both platforms, verify Home → each destination → Home, map movement, pickup and destination selection, ride submission, cancellation, active-ride resumption after returning Home, and loading/error/retry behavior. Verify the adaptive demo at compact and wide widths, in landscape, tabletop and vertical-fold postures, RTL, and large font sizes. Check both list and detail scroll positions across resizing, and launch Home/adaptive without Maps credentials. Runtime Maps verification requires working credentials and network access.
+On both platforms, verify Home → each destination → Home, map movement, pickup and destination selection, and navigation to and from the original ride-request screen. Verify the adaptive demo at compact and wide widths, in landscape, tabletop and vertical-fold postures, RTL, and large font sizes. Check both list and detail scroll positions across resizing, and launch Home/adaptive without Maps credentials. Runtime Maps verification requires working credentials and network access.
 
-### Dependency-upgrade baseline — 2026-10-28
+### Validation — 2026-10-28
 
-This historical record predates the new Home/adaptive screens and restoration of continuous map callbacks. It establishes the upgrade baseline, not validation of the current adaptive changes.
-
-- Gradle `help` passed. A real Android Studio 2026.2.2 project sync completed with `BUILD SUCCESSFUL`.
-- All **15 shared Android host tests passed**: test report (local: `composeApp/build/reports/tests/testAndroidHostTest/index.html`).
-- After launcher-icon cleanup, the final clean Android debug assembly and lint run passed in 57 seconds with normal caching enabled: debug APK (local: `androidApp/build/outputs/apk/debug/androidApp-debug.apk`), lint report (local: `androidApp/build/reports/lint-results-debug.html`). Lint reported zero errors and two `OldTargetApi` warnings because target SDK 36 is intentionally retained.
-- Xcode 27.1 resolved the exact Google Maps 11.2.0 [Swift package pin](iosApp/iosApp.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved), linked the shared framework (local: `composeApp/build/bin/iosSimulatorArm64/debugFramework/ComposeApp.framework/`), and built the complete unsigned simulator app (local: `iosApp/build/DerivedData/Build/Products/Debug-iphonesimulator/MiniUber.app/`).
-- All **15 iOS simulator tests passed** using the installed iOS 26.5 simulator runtime with SDK 27.1: test report (local: `composeApp/build/reports/tests/iosSimulatorArm64Test/index.html`).
-- The interactive iOS pickup → destination → request → cancel smoke test passed on the iOS 27.1 DeviceHub runtime. Selection markers were visible, but map tiles remained blank.
-- The interactive Android pickup → destination → request → cancel smoke test passed on the API 37.1 emulator, returning to the ready pickup screen after cancellation.
-
-Android map tiles remain blocked by an authorization failure for the existing Maps key. In those smoke checks, the ride flow worked with simulated data on both platforms; map-tile rendering was not verified successfully on either platform. Configure authorized, platform-restricted Google Maps keys before recording a live map demo. Build artifacts and test reports above are local generated outputs.
-
-### Home, adaptive, and router validation — 2026-10-28
-
-- All **41 Android host tests passed**, including 22 base/map/ride/Landing tests and 19 adaptive tests. Local test report: `composeApp/build/reports/tests/testAndroidHostTest/index.html`.
-- Android debug assembly passed: debug APK (local: `androidApp/build/outputs/apk/debug/androidApp-debug.apk`). Android lint reported **zero errors** and two intentional `OldTargetApi` warnings for target SDK 36: lint report (local: `androidApp/build/reports/lint-results-debug.html`).
-- A real Android Studio 2026.2.2 project sync passed.
-- All **43 iOS simulator tests passed**: the 41 shared tests plus two real `SavedStateHandle` argument-decoding tests. Local test report: `composeApp/build/reports/tests/iosSimulatorArm64Test/index.html`.
-- The shared iOS framework and complete unsigned simulator application built successfully with Xcode 27.1: framework (local: `composeApp/build/bin/iosSimulatorArm64/debugFramework/ComposeApp.framework/`), simulator app (local: `iosApp/build/DerivedData/Build/Products/Debug-iphonesimulator/MiniUber.app/`).
+- All **33 Android host tests passed**. Local report: `composeApp/build/reports/tests/testAndroidHostTest/index.html`.
+- Android debug assembly and lint passed with **zero errors** and two intentional `OldTargetApi` warnings for target SDK 36. Local APK: `androidApp/build/outputs/apk/debug/androidApp-debug.apk`; lint report: `androidApp/build/reports/lint-results-debug.html`.
+- Android Studio 2026.2.2 project sync passed during the dependency upgrade; dependency pins remain unchanged by the ride rollback.
+- All **35 iOS simulator tests passed** and the shared iOS framework linked. Local report: `composeApp/build/reports/tests/iosSimulatorArm64Test/index.html`; framework: `composeApp/build/bin/iosSimulatorArm64/debugFramework/ComposeApp.framework/`.
+- The unsigned ARM64 simulator app built successfully with Xcode 27.1. Local output: `iosApp/build/DerivedData/Build/Products/Debug-iphonesimulator/MiniUber.app/`.
 
 Interactive checks completed:
 
-- **Android:** compact ride list and detail selection; Home → Map → Home → Adaptive navigation. The final compact screenshot includes dark status-bar icons.
-- **iPhone Duo simulator:** Open posture displayed two panes. Ride 2 remained selected through Partially Open vertical side-by-side layout, rotation into tabletop layout, and Closed compact details. All rides → list → Home and Home → Map → Home also worked.
-- After the feature-file and router refactor, the rebuilt iOS application passed Home → Adaptive → ride details → Home and Home → Map → Home again.
-- These navigation checks used builds without Maps keys. They verified the unavailable-map screen and return navigation; they did not verify live map tiles.
+- **Android Pixel Fold emulator:** actual Open, Half Open/book, Closed/compact, and reopened states were checked. Native Android window dimensions changed from the inner 2208×1840 display to the outer 1080×2092 display. Earlier checks also covered compact ride selection and Home → Map → Home → Adaptive navigation.
+- **iPhone Duo simulator:** actual Open, Half Open/tabletop, Closed/compact, and reopened states were checked. Earlier checks also covered explicit ride selection, rotation, All rides → list → Home, and Home → Map → Home.
+- These adaptive and navigation checks used builds without Maps keys. They verify layout and the unavailable-map screen, not live map tiles.
 
-| Android compact | iPhone Duo tabletop |
-| --- | --- |
-| ![Android compact ride list](artifacts/adaptive-qa/android-compact.png) | ![iPhone Duo tabletop with the selected ride retained](artifacts/adaptive-qa/ios-duo-tabletop.png) |
+Samsung Z Fold/Z Flip device profiles, large-font visual checks, and RTL visual checks remain unverified. The Android fold capture uses the official Pixel Fold profile. Shared policy tests cover fold bounds, RTL placement, geometry conversion, and occlusions, but do not replace those device-level checks.
 
-Native Android Fold/Flip visual checks, large-font visual checks, and RTL visual checks remain incomplete in this validation record. Shared policy tests cover fold bounds, RTL placement, geometry conversion, and occlusions, but do not replace those device-level checks. The historical Maps authorization failure still needs a working key before recording a live map demo.
+Map tiles remain unverified: the previously configured Android key was rejected, and no working platform keys were supplied. Configure authorized Google Maps keys to demonstrate live maps. The adaptive demo works without them.
 
-iOS linking still reports the existing ICU dependency warning: it was built for iOS 18.5 while this project's deployment target is 16.6. The framework and application builds passed; an actual iOS 16.6 runtime has not been validated.
+iOS linking reports the existing ICU dependency warning: it was built for iOS 18.5 while this project's deployment target is 16.6. An actual iOS 16.6 runtime has not been validated.
+
+### Recording verification — 2026-10-31
+
+- **Android Pixel Fold:** the native emulator recording shows selection, opening the inner display, book posture, reopening, and closing onto the selected ride’s compact details. The GIF contains 300 frames over 20 seconds.
+- **iPhone Duo:** native simulator recordings show selection, two panes, the live tabletop transition, reopening, compact details, and All rides returning to the list. The GIF contains 297 frames over 19.8 seconds, including the one-second ending hold.
+- Both GIFs are 720×900, loop indefinitely, and are under 2 MB each. The combined MP4 is 39.8 seconds, uses real recorded frames, and has no audio track. Captions identify the tested platforms and the edits.
+- The exports were decoded and inspected across the selection and layout changes. The selected Riverside Park ride remains selected through folding. These media changes leave application source and the 2026-10-28 test results above unchanged.
 
 ## Roadmap
 

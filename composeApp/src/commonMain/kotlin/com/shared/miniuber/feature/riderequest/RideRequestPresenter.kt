@@ -59,7 +59,9 @@ class RideRequestPresenter(
             ).onSuccess { rideResponse ->
                 _state.update {
                     it.copy(
-                        data = it.data.copy(requestedAt = rideResponse.requestedAt)
+                        data = it.data.copy(requestedAt = rideResponse.requestedAt),
+                        isLoading = false,
+                        error = null
                     )
                 }
             }.onFailure { error ->
@@ -74,7 +76,9 @@ class RideRequestPresenter(
             interactor.getLastRideRequest().onSuccess { rideResponse ->
                 _state.update {
                     it.copy(
-                        data = it.data.copy(requestedAt = rideResponse.requestedAt)
+                        data = it.data.copy(requestedAt = rideResponse.requestedAt),
+                        isLoading = false,
+                        error = null
                     )
                 }
             }.onFailure { error ->
