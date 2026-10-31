@@ -2,6 +2,16 @@
 
 The English article is in [article.md](article.md), continuing the existing English Part 1. It is a local draft prepared from repository snapshot `263f285`; no Medium story has been created or published.
 
+## Quick copy and paste
+
+1. Open [copy-to-medium.html](copy-to-medium.html) in Chrome or Safari.
+2. Click **Copy title**, then paste into Medium's title field.
+3. Click **Copy subtitle**, then paste into the subtitle line.
+4. Click **Copy body**, then paste into the story body with **Command–V**. Use ordinary paste, without Shift, to retain formatting.
+5. Replace the three **UPLOAD IMAGE** markers with the GIF and two PNGs listed below, using Medium's image button or drag and drop.
+
+The helper copies formatted HTML so headings, links, and code can retain their structure. Medium controls the final formatting, so check the code blocks and image captions in its draft preview. The resulting paste has not been tested in Medium.
+
 ## Story fields
 
 - **Title:** Mini-Uber Part 2: Building an Adaptive iPhone Duo UI with Compose Multiplatform
