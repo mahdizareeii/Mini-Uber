@@ -7,7 +7,7 @@
 | **Map selection · Android and iOS**<br>[<img src="Screenshot_1.png" width="420" alt="Original map selection screens on Android and iOS">](Screenshot_1.png) | **Android · Pixel Fold**<br>[<img src="artifacts/adaptive-demo/android-adaptive.gif" width="420" alt="Pixel Fold opening, entering book posture, and closing onto the selected ride">](artifacts/adaptive-demo/android-adaptive.gif) |
 | **Ride request · Android and iOS**<br>[<img src="Screenshot_2.png" width="420" alt="Original ride request screens on Android and iOS">](Screenshot_2.png) | **iOS · iPhone Duo in Device Hub**<br>[<img src="artifacts/adaptive-demo/ios-adaptive.gif" width="420" alt="Recorded cursor selecting iPhone Duo posture controls as the Compose layout adapts">](artifacts/adaptive-demo/ios-adaptive.gif) |
 
-Mini-Uber is an Android and iOS example of shared UI, presenter state, and navigation using **Kotlin Multiplatform (KMP)**, **Compose Multiplatform (CMP)**, and **VIPER-inspired architecture**. Home opens the original map flow or an independent adaptive ride-history demo. The map uses a fake repository; the adaptive demo reads six bundled sample rides.
+Mini-Uber is an Android and iOS example of shared UI, presenter state, and navigation using **Kotlin Multiplatform (KMP)**, **Compose Multiplatform (CMP)**, and **VIPER architecture**. Home opens the original map flow or an independent adaptive ride-history demo. The map uses a fake repository; the adaptive demo reads six bundled sample rides.
 
 ## Technology and KMP structure
 
