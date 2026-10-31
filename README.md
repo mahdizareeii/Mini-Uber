@@ -21,14 +21,16 @@ The map keeps the original stateless fake repository. It generates sample driver
 
 ### Adaptive behavior
 
-The looping GIFs are exported from real native recordings of the running app at 15 fps. Android preserves the recorded inner/outer display switches; long idle pauses are trimmed. The iOS recorder follows one display, so separate compact and unfolded recordings are joined with cuts at display switches. Idle pauses are also trimmed, and its final ride-list frame is held for one second. Both demos use local sample data and work without Maps credentials.
+The looping GIFs are exported from real recordings of the running app at 15 fps. Android preserves the native emulator's recorded inner/outer display switches; long idle pauses are trimmed. The iOS GIF uses one continuous 27.6-second segment of a native macOS recording of Xcode's Device Hub, including the actual cursor and posture-control selections. Both demos use local sample data and work without Maps credentials.
 
-[Download the 40-second LinkedIn MP4](artifacts/adaptive-demo/adaptive-showcase.mp4) — Android followed by iOS, 1080×1350, H.264 at 30 fps, without audio.
+For mobile developers, the demo shows a shared Compose list/detail screen adapting to compact and two-pane layouts across rotation and folding. The selected Harbour Walk ride remains available in compact details after the iPhone closes; these are read-only sample trips, with no network or booking operation.
+
+[Download the earlier 40-second LinkedIn showcase](artifacts/adaptive-demo/adaptive-showcase.mp4) — unchanged Android followed by iOS footage, 1080×1350, H.264 at 30 fps, without audio. This earlier MP4 retains the original iOS simulator recordings with cuts between displays; it does not include the new Device Hub window recording below.
 
 | Android · Pixel Fold | iOS · iPhone Duo |
 | --- | --- |
-| ![Pixel Fold opening and closing through expanded, book, and compact layouts](artifacts/adaptive-demo/android-adaptive.gif) | ![iPhone Duo opening and closing through expanded, tabletop, and compact layouts](artifacts/adaptive-demo/ios-adaptive.gif) |
-| Select a ride → open → half open/book → fully open → closed details. | Select a ride → open → half open/tabletop → fully open → closed details → All rides. |
+| ![Pixel Fold opening and closing through expanded, book, and compact layouts](artifacts/adaptive-demo/android-adaptive.gif) | ![Device Hub cursor selecting iPhone Duo posture controls as the shared Compose layout adapts](artifacts/adaptive-demo/ios-adaptive.gif) |
+| Select a ride → open → half open/book → fully open → closed details. | Compact list → rotate → open → select rides → partially open/book → closed Harbour Walk details. |
 
 - Below **600dp of measured content width**, the list and selected ride detail occupy separate screens. **All rides** and Android Back return from details to the list; Home returns to the landing screen.
 - At **600dp and above**, list and detail appear side by side. The list uses 35% of the width, clamped to 240–360dp, with a 24dp gap. With no explicit selection, the first ride appears in the detail pane without changing compact navigation state.
@@ -196,10 +198,10 @@ iOS linking reports the existing ICU dependency warning: it was built for iOS 18
 
 ### Recording verification — 2026-10-31
 
-- **Android Pixel Fold:** the native emulator recording shows selection, opening the inner display, book posture, reopening, and closing onto the selected ride’s compact details. The GIF contains 300 frames over 20 seconds.
-- **iPhone Duo:** native simulator recordings show selection, two panes, the live tabletop transition, reopening, compact details, and All rides returning to the list. The GIF contains 297 frames over 19.8 seconds, including the one-second ending hold.
-- Both GIFs are 720×900, loop indefinitely, and are under 2 MB each. The combined MP4 is 39.8 seconds, uses real recorded frames, and has no audio track. Captions identify the tested platforms and the edits.
-- The exports were decoded and inspected across the selection and layout changes. The selected Riverside Park ride remains selected through folding. These media changes leave application source and the 2026-10-28 test results above unchanged.
+- **Android Pixel Fold:** the native emulator recording shows selection, opening the inner display, book posture, reopening, and closing onto the selected ride’s compact details. The unchanged GIF is 720×900, with 300 frames over 20 seconds, and is under 2 MB.
+- **iPhone Duo:** a native macOS Device Hub window recording shows the cursor, posture controls, rotation, two panes, partially open/book posture, and closing onto the selected Harbour Walk ride’s compact details. One continuous source interval from 4.0 to 31.6 seconds is cropped to keep the device and control icons visible. The GIF is 960×898, with 414 frames over 27.6 seconds, and is 8.27 MB.
+- Both GIFs run at 15 fps and loop indefinitely. The unchanged earlier combined MP4 is 39.8 seconds, uses real recorded frames, retains its original iOS display-switch cuts, and has no audio track.
+- The exports were decoded and inspected across the selection and layout changes. Riverside Park remains selected through folding in the Android recording; Harbour Walk remains selected when the iPhone closes in the new recording. These media changes leave application source and the 2026-10-28 test results above unchanged.
 
 ## Roadmap
 
