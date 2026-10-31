@@ -1,14 +1,19 @@
-# Mini-Uber
+# Mini-Uber — Adaptive Compose Multiplatform with VIPER-Inspired Architecture
 
-A small Android and iOS app built with Kotlin Multiplatform, Compose Multiplatform, and a VIPER-style architecture. A shared Home screen opens either the original ride-request map experience or a separate adaptive ride-history demo. Screens and business logic are shared, with native Google Maps integration on each platform.
+A small Android and iOS project built with **Kotlin Multiplatform**, **Compose Multiplatform**, and **VIPER-inspired architecture**. Shared Compose screens render immutable presenter state, while declarative adaptive layouts respond to available space and native fold information.
+
+Home opens two independent experiences: the original ride-request flow with native Google Maps integration, and a read-only adaptive ride-history demo. The adaptive screen changes between compact and two-pane layouts while retaining selection and scroll positions.
+
+| Original map experience | Adaptive Compose demo |
+| :---: | :---: |
+| **Map selection · Android and iOS**<br>[<img src="Screenshot_1.png" width="420" alt="Original map selection screens on Android and iOS">](Screenshot_1.png) | **Android · Pixel Fold**<br>[<img src="artifacts/adaptive-demo/android-adaptive.gif" width="420" alt="Pixel Fold opening, entering book posture, and closing onto the selected ride">](artifacts/adaptive-demo/android-adaptive.gif) |
+| **Ride request · Android and iOS**<br>[<img src="Screenshot_2.png" width="420" alt="Original ride request screens on Android and iOS">](Screenshot_2.png) | **iOS · iPhone Duo in Device Hub**<br>[<img src="artifacts/adaptive-demo/ios-adaptive.gif" width="420" alt="Recorded cursor selecting iPhone Duo posture controls as the Compose layout adapts">](artifacts/adaptive-demo/ios-adaptive.gif) |
+
+Select any preview to view it at full size. The screenshots show the original map flow; the GIFs show the separate adaptive demo using local sample data.
 
 [Original architecture article](https://medium.com/@mahdizareeii/building-a-mini-uber-with-kotlin-multiplatform-viper-architecture-compose-multiplatform-1d3dd0a08399)
 
-The original map flow:
-
-| Map selection | Ride request |
-| --- | --- |
-| ![Map selection screen](Screenshot_1.png) | ![Ride request screen](Screenshot_2.png) |
+[Download the earlier 40-second LinkedIn showcase](artifacts/adaptive-demo/adaptive-showcase.mp4) — Android followed by iOS footage, 1080×1350, H.264 at 30 fps, without audio. This earlier MP4 retains the original iOS simulator recordings with cuts between displays; it does not include the new Device Hub window recording shown in the gallery.
 
 ## What the demo does
 
@@ -19,18 +24,13 @@ Home offers two independent destinations:
 
 The map keeps the original stateless fake repository. It generates sample driver and ride responses, reports `NoTrip`, and does not persist or cancel a booking. Its `requestedAt` field remains the original UUID placeholder, not a timestamp. Driver information is generated locally; there is no backend, GPS integration, address search, road routing, payment processing, or full assigned/arriving/completed trip flow. The adaptive demo's completed rides are separate fixtures, not persisted map bookings. Android and iOS are the configured targets; there is no desktop target.
 
-### Adaptive behavior
+## Declarative adaptive layouts with Compose Multiplatform
 
-The looping GIFs are exported from real recordings of the running app at 15 fps. Android preserves the native emulator's recorded inner/outer display switches; long idle pauses are trimmed. The iOS GIF uses one continuous 27.6-second segment of a native macOS recording of Xcode's Device Hub, including the actual cursor and posture-control selections. Both demos use local sample data and work without Maps credentials.
+The shared Compose screen declares its list and detail panes from presenter state, measured content constraints, and platform-reported fold regions. A shared layout policy chooses their bounds; Compose renders the resulting arrangement when any of those inputs change. Android supplies fold geometry through Material3 Adaptive, and a UIKit bridge supplies it on supported iOS versions.
 
-For mobile developers, the demo shows a shared Compose list/detail screen adapting to compact and two-pane layouts across rotation and folding. The selected Harbour Walk ride remains available in compact details after the iPhone closes; these are read-only sample trips, with no network or booking operation.
+Selection lives in the presenter, and list and per-ride detail scroll states are retained outside the changing panes. Showing the first ride by default in a wide layout does not change compact-screen navigation state.
 
-[Download the earlier 40-second LinkedIn showcase](artifacts/adaptive-demo/adaptive-showcase.mp4) — unchanged Android followed by iOS footage, 1080×1350, H.264 at 30 fps, without audio. This earlier MP4 retains the original iOS simulator recordings with cuts between displays; it does not include the new Device Hub window recording below.
-
-| Android · Pixel Fold | iOS · iPhone Duo |
-| --- | --- |
-| ![Pixel Fold opening and closing through expanded, book, and compact layouts](artifacts/adaptive-demo/android-adaptive.gif) | ![Device Hub cursor selecting iPhone Duo posture controls as the shared Compose layout adapts](artifacts/adaptive-demo/ios-adaptive.gif) |
-| Select a ride → open → half open/book → fully open → closed details. | Compact list → rotate → open → select rides → partially open/book → closed Harbour Walk details. |
+The gallery GIFs are real recordings at 15 fps. Android shows selection → open → half open/book → fully open → closed details, with long idle pauses trimmed. The iOS GIF uses one continuous 27.6-second macOS recording of Device Hub: compact list → rotate → open → select rides → partially open/book → closed Harbour Walk details. The actual cursor and posture controls remain visible. Both adaptive demos work without Maps credentials.
 
 - Below **600dp of measured content width**, the list and selected ride detail occupy separate screens. **All rides** and Android Back return from details to the list; Home returns to the landing screen.
 - At **600dp and above**, list and detail appear side by side. The list uses 35% of the width, clamped to 240–360dp, with a 24dp gap. With no explicit selection, the first ride appears in the detail pane without changing compact navigation state.
@@ -39,7 +39,9 @@ For mobile developers, the demo shows a shared Compose list/detail screen adapti
 
 The adaptive screen targets the main app window on Fold/Flip-style devices and iPhone Duo. A dedicated Galaxy Z Flip external cover-screen experience is outside this demo's scope. The map screen retains its original layout and camera interaction.
 
-## How it works
+## VIPER-inspired architecture and state flow
+
+Feature packages separate screens, presenters, interactors, models, and routers. Compose screens send events to lifecycle-aware presenters and observe immutable `UiState` snapshots through `StateFlow`. Presenters update state and coordinate typed navigation; a separate, stable `SharedFlow` exposes UI actions. Koin provides the feature dependencies and destination-scoped routers.
 
 ```mermaid
 flowchart LR
