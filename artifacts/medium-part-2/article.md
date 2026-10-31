@@ -10,7 +10,7 @@ On iPhone Duo, opening, closing, rotating, or partially folding the device can c
 
 I added a separate, read-only adaptive demo to Mini-Uber. It uses six bundled sample rides, so I can explore layout behavior independently of Maps credentials and ride requests.
 
-![The running adaptive demo in iPhone Duo Device Hub](../adaptive-demo/ios-adaptive.gif)
+![The running adaptive demo in iPhone Duo Device Hub](https://raw.githubusercontent.com/mahdizareeii/Mini-Uber/main/artifacts/adaptive-demo/ios-adaptive.gif)
 
 *The recording shows the iPhone Duo simulator rotating, opening, entering a partially open book posture, and closing with Harbour Walk still selected.*
 
@@ -26,7 +26,7 @@ The application still has the same basic responsibilities:
 
 The adaptive feature fits into the presentation layer. Its state contains local demo rides and the selected ride ID; it does not call the ride repository.
 
-![Shared presentation and layout code with native platform adapters](architecture.png)
+![Shared presentation and layout code with native platform adapters](https://raw.githubusercontent.com/mahdizareeii/Mini-Uber/main/artifacts/medium-part-2/architecture.png)
 
 *Native hosts and geometry adapters feed a shared Compose presentation layer. The map feature retains its interactor and repository path.*
 
@@ -145,7 +145,7 @@ UIKit provides a region relative to its view. The shared layout works with the C
 
 I use this pipeline:
 
-![Coordinate conversion from each platform into local Compose pane bounds](coordinate-pipeline.png)
+![Coordinate conversion from each platform into local Compose pane bounds](https://raw.githubusercontent.com/mahdizareeii/Mini-Uber/main/artifacts/medium-part-2/coordinate-pipeline.png)
 
 *UIKit points are converted to window coordinates. Android window pixels are converted to dp. The shared policy then subtracts the Compose content's window origin.*
 

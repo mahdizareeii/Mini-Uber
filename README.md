@@ -1,4 +1,4 @@
-[Read the architecture article on Medium](https://medium.com/@mahdizareeii/building-a-mini-uber-with-kotlin-multiplatform-viper-architecture-compose-multiplatform-1d3dd0a08399)
+[Part 1 — KMP and VIPER Architecture](https://medium.com/@mahdizareeii/building-a-mini-uber-with-kotlin-multiplatform-viper-architecture-compose-multiplatform-1d3dd0a08399) · [Part 2 — Adaptive iPhone Duo UI](https://medium.com/@mahdizareeii/mini-uber-part-2-building-an-adaptive-iphone-duo-ui-with-compose-multiplatform-70fde9189685)
 
 # Mini-Uber — Adaptive Compose Multiplatform with VIPER-Inspired Architecture
 
